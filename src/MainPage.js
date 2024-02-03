@@ -7,6 +7,7 @@ import myimg2 from "./assets/img/team/sarath.png";
 import myimg3 from "./assets/img/team/images1.png";
 import myimg4 from "./assets/img/team/jithin.png";
 
+ 
 
 import './style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
