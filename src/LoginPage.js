@@ -3,7 +3,7 @@ import './log.css';
 import Header from './Header';
 import Footer from './Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import myimg from "./img/login.png";
+import myimg from "./assets/img/login.png";
 
 const LoginPage = () => {
   // State variables to store username and password
