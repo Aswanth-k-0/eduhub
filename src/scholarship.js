@@ -3,10 +3,9 @@ import './header.css';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-import './home.css';
+import './scholarship.css';
 
-
-const home=() => {
+const scholarship=() => {
     return (
         <div>
         <header id="header" className="fixed-top">
@@ -30,7 +29,7 @@ const home=() => {
               <a className="nav-link" href="#about">Notifications</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#" data-target="#myModal" data-toggle="modal">Logout</a>
+              <a className="nav-link"><Link to="/LoginPage">Logout</Link></a>
             </li>
           </ul>
           <i className="bi bi-list mobile-nav-toggle"></i>
@@ -51,10 +50,8 @@ const home=() => {
                     <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" className="rounded-circle" width="150"/>
                     <div className="mt-3">
                       <h4>John Doe</h4>
-                      <p className="text-secondary mb-1">Full Stack Developer</p>
-                      <p className="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
                       <div className="row">
-                    <div className="col-sm-12">
+                      <div className="col-sm-12">
                       <a className="btn btn-info " target="__blank" href="./profile">View Full Profile</a>
                     </div>
                   </div>
@@ -63,7 +60,10 @@ const home=() => {
                 </div>
               </div>
               <div className="card1 mt-3">
-                <h3>Events</h3>
+                <h3>Preferences</h3>
+                <div className="col-sm-12 position-absolute bottom-0 end-0">
+                      <a className="happy1 " target="__blank" href="#">Edit</a>
+                </div> 
               </div>
             </div>
             
@@ -90,26 +90,14 @@ const home=() => {
             </div>
             <br></br>
 
-
-              <div className="card mb-3">
-                <div className="card-body1">
-                <h3>Latest</h3>
-                  
-
-                </div>
+            <h3>Recommended For You</h3>
+              <div className="card mb-3"> 
+                
               </div>
+              
+              <h3>Other</h3>
               <div className="card mb-3">
-                <div className="card-body2">
-                <h4>What are you looking for?</h4>
-                  
-                </div>
-              </div>
-              <div className="card mb-3">
-                <div className="card-body1">
-                <h3>Suggested for you</h3>
-                  
-
-                </div>
+                
               </div>
 
               
@@ -121,31 +109,11 @@ const home=() => {
           </div>
 
         </div>
-        
-        <div class="modal fade" id="myModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Sign Out</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                Do you want to sign out?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" className="btn btn-danger" data-dismiss="modal"onClick={() => window.location.replace('/Loginpage')}>Sign Out</button>
-            </div>
-        </div>
     </div>
-</div>
-    </div>
-
-
     
         );
     };
 
    
-export default home;
+export default scholarship;
 

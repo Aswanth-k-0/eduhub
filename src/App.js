@@ -11,6 +11,7 @@ import LoginPage from './LoginPage';
 import SignupPage from './SignupPage';
 import Home from './home';
 import Profile from './profile';
+import Scholarship from './scholarship';
 
 function App() {
   return (
@@ -22,7 +23,8 @@ function App() {
           <Route path="/signup" element={<SignupPage/>} />
           <Route path="/home" element={<Home/>} />
           <Route path="/profile" element={<Profile/>} />
-
+          <Route path="/scholarship" element={<Scholarship/>} />
+           
 
           </Routes>
           </BrowserRouter>

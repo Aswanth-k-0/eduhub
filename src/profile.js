@@ -21,7 +21,7 @@ const profile=() => {
               <a className="nav-link" ><Link to="/Home">Home</Link></a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#services">Scholarships</a>
+              <a className="nav-link" href="/Scholarship">Scholarships</a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="#about">Jobs</a>
