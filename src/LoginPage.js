@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './log.css';
 import Header from './Header';
 import Footer from './Footer';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import myimg from "./img/login.png";
+import myimg from "./assets/img/login.png";
 
 const LoginPage = () => {
   // State variables to store username and password
@@ -16,6 +17,7 @@ const LoginPage = () => {
     console.log('Username:', username);
     console.log('Password:', password);
     // You can add your login logic here (e.g., sending data to a server)
+    
   };
 
   return (
@@ -89,6 +91,7 @@ const LoginPage = () => {
                   type="submit"
                   className="btn btn-primary btn-lg"
                   style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem' }}
+                  onClick={handleSubmit}
                 >
                   Login
                 </button>

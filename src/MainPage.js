@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import myimg from "./img/new.png";
+import myimg from "./assets/img/new.png";
 import myimg1 from "./assets/img/team/aswanth.png";
 import myimg2 from "./assets/img/team/sarath.png";
 import myimg3 from "./assets/img/team/images1.png";
@@ -18,7 +18,7 @@ import './assets/vendor/remixicon/remixicon.css';
 import './assets/vendor/swiper/swiper-bundle.min.css';
 
 const TeamMember = ({ name, role, image, socialLinks }) => (
-  <div className="col-lg-6" data-aos="zoom-in" data-aos-delay="100">
+    <div className="col-lg-6" data-aos="zoom-in" data-aos-delay="100">
     <div className="member d-flex align-items-start">
       <div className="pic"><img src={image} className="img-fluid" alt={name} /></div>
       <div className="member-info">

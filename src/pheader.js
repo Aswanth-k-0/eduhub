@@ -24,7 +24,7 @@ const pheader = () => {
               <a className="nav-link" href="#about">About</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" ><Link to="/LoginPage">Login</Link></a>
+              <a className="nav-link" ><Link to="/home">Login</Link></a>
             </li>
           </ul>
           <i className="bi bi-list mobile-nav-toggle"></i>
@@ -33,6 +33,7 @@ const pheader = () => {
     </header>
   );
 }
+
 
 
 export default Pheader;
