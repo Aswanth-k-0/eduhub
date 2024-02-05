@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './header.css';
+import './css/header.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-const Header = () => {
+const pheader = () => {
   return (
     <header id="header" className="fixed-top">
       <div className="container d-flex align-items-start">
@@ -24,7 +24,7 @@ const Header = () => {
               <a className="nav-link" href="#about">About</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" ><Link to="/LoginPage">Login</Link></a>
+              <a className="nav-link" ><Link to="/home">Login</Link></a>
             </li>
           </ul>
           <i className="bi bi-list mobile-nav-toggle"></i>
@@ -35,4 +35,5 @@ const Header = () => {
 }
 
 
-export default Header;
+
+export default Pheader;

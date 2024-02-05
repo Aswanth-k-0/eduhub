@@ -1,9 +1,9 @@
 import React from 'react';
-import './header.css';
+import './css/header.css';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-import './scholarship.css';
+import './css/scholarship.css';
 
 const scholarship=() => {
     return (

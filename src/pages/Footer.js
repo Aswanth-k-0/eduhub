@@ -1,5 +1,5 @@
 import React from 'react';
-import './style.css';
+import './css/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'boxicons/css/boxicons.min.css';
 import './assets/vendor/bootstrap-icons/bootstrap-icons.css';
