@@ -3,10 +3,10 @@ import './header.css';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-import './home.css';
+import './profile.css';
 
 
-const home=() => {
+const profile=() => {
     return (
         <div>
         <header id="header" className="fixed-top">
@@ -54,16 +54,19 @@ const home=() => {
                       <p className="text-secondary mb-1">Full Stack Developer</p>
                       <p className="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
                       <div className="row">
-                    <div className="col-sm-12">
-                      <a className="btn btn-info " target="__blank" href="./profile">View Full Profile</a>
-                    </div>
                   </div>
                     </div>
                   </div>
                 </div>
               </div>
               <div className="card1 mt-3">
-                <h3>Events</h3>
+                <h3>Interests</h3>
+                <div className="col-sm-12 position-absolute bottom-0 end-0">
+                      <a className="happy1 " target="__blank" href="#">Edit</a>
+                </div> 
+              </div>
+              <div className="card1 mt-3">
+                <h3>Set Alert</h3>
               </div>
             </div>
             
@@ -92,23 +95,22 @@ const home=() => {
 
 
               <div className="card mb-3">
-                <div className="card-body1">
-                <h3>Latest</h3>
-                  
+                <div className="card-body1 position-relative">
+                <h3>Basic Details</h3>
+                <div className="col-sm-12 position-absolute bottom-0 end-0">
+                      <a className="happy " target="__blank" href="#">Edit</a>
+                </div> 
 
                 </div>
               </div>
-              <div className="card mb-3">
-                <div className="card-body2">
-                <h4>What are you looking for?</h4>
-                  
-                </div>
-              </div>
+              
               <div className="card mb-3">
                 <div className="card-body1">
-                <h3>Suggested for you</h3>
+                <h3>Notifications</h3>
                   
-
+                <div className="col-sm-12 position-absolute bottom-0 end-0">
+                      <a className="happy2 btn btn-info " target="__blank" href="./profile">View All</a>
+                    </div>
                 </div>
               </div>
 
@@ -127,5 +129,5 @@ const home=() => {
     };
 
    
-export default home;
+export default profile;
 

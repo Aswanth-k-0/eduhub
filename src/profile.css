@@ -63,10 +63,38 @@ body{
 }
 .card-body1 {
     flex: 1 1 auto;
-    min-height: 300px;
-    max-height: 350px;
+    min-height: 400px;
+    max-height: 450px;
     overflow-y:auto;
     scroll-behavior: smooth;
+}
+.happy{
+    margin-left: 750px;
+    margin-bottom: 5px;
+    transition: all ease-in-out 0.4s;
+    font-size: large;
+    font-weight: 700;
+    color: #2b00ff;
+}
+.happy:hover{
+    color: #215cbc;
+}
+
+.happy1{
+    margin-left: 350px;
+    margin-bottom: 5px;
+    transition: all ease-in-out 0.4s;
+    font-size: large;
+    font-weight: 700;
+    color: #2b00ff;
+}
+
+.happy2{
+    margin-left: 750px;
+    margin-bottom: 10px;
+}
+.happy1:hover{
+    color: #215cbc;
 }
 
 @keyframes fadeInUp {
@@ -83,7 +111,7 @@ body{
   .card {
     animation: fadeInUp 1s ease-out; /* Adjust duration and timing function as needed */
   }
-  .card1{
+  .card1 {
     animation: fadeInUp 1s ease-out;
   }
 .card-body2 {
