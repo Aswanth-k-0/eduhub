@@ -12,10 +12,10 @@ import myimg4 from "./assets/img/team/jithin.png";
 import './css/style.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import '../assets/vendor/bootstrap-icons/bootstrap-icons.css';
-import '../assets/vendor/glightbox/css/glightbox.min.css';
-import '../assets/vendor/remixicon/remixicon.css';
-import '../assets/vendor/swiper/swiper-bundle.min.css';
+import './assets/vendor/bootstrap-icons/bootstrap-icons.css';
+import './assets/vendor/glightbox/css/glightbox.min.css';
+import './assets/vendor/remixicon/remixicon.css';
+import './assets/vendor/swiper/swiper-bundle.min.css';
 
 const TeamMember = ({ name, role, image, socialLinks }) => (
     <div className="col-lg-6" data-aos="zoom-in" data-aos-delay="100">
