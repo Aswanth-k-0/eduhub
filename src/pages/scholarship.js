@@ -91,13 +91,55 @@ const scholarship=() => {
             <br></br>
 
             <h3>Recommended For You</h3>
-              <div className="card mb-3"> 
-                
+            <div class="row">
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-body">
+                  Card 1 Content
+                </div>
               </div>
-              
+             </div>
+              <div class="col-md-3">
+                <div class="card">
+                  <div class="card-body">
+                    Card 2 Content
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card">
+                  <div class="card-body">
+                    Card 3 Content
+                  </div>
+                </div>
+              </div>
+
+              </div>
+              <hr></hr>
               <h3>Other</h3>
-              <div className="card mb-3">
-                
+              <div class="row">
+            <div class="col-md-3">
+              <div class="card">
+                <div class="card-body">
+                  Card 1 Content
+                </div>
+              </div>
+             </div>
+              <div class="col-md-3">
+                <div class="card">
+                  <div class="card-body">
+                    Card 2 Content
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="card">
+                  <div class="card-body">
+                    Card 3 Content
+                  </div>
+                </div>
+              </div>
+
               </div>
 
               
