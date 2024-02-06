@@ -68,7 +68,7 @@ body{
     overflow-y:auto;
     scroll-behavior: smooth;
 }
-.happy{
+.happ{
     margin-left: 750px;
     margin-bottom: 5px;
     transition: all ease-in-out 0.4s;
@@ -76,7 +76,7 @@ body{
     font-weight: 700;
     color: #2b00ff;
 }
-.happy:hover{
+.happ:hover{
     color: #215cbc;
 }
 
@@ -89,7 +89,7 @@ body{
     color: #2b00ff;
 }
 
-.happy2{
+.happ2{
     margin-left: 750px;
     margin-bottom: 10px;
 }

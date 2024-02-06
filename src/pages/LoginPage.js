@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import './css/log.css';
 import Header from './Header';
@@ -7,6 +8,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import myimg from "./assets/img/login.png";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+
   // State variables to store username and password
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -17,7 +20,12 @@ const LoginPage = () => {
     console.log('Username:', username);
     console.log('Password:', password);
     // You can add your login logic here (e.g., sending data to a server)
+    navigate('/home');
+  };
+
+  const handleaccount = (event) => {
     
+    navigate('/Signup');
   };
 
   return (
@@ -48,7 +56,7 @@ const LoginPage = () => {
                   name="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  required
+                  // required
                 />
                 
               </div>
@@ -65,7 +73,7 @@ const LoginPage = () => {
                   name="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  required
+                  // required
                 />
                 
               </div>
@@ -86,14 +94,22 @@ const LoginPage = () => {
                 </a>
               </div>
 
-              <div className="text-center text-lg-start mt-4 pt-2">
-                <button
+              <div className="text-center text-lg-start d-flex justify-content-between align-items-center mt-4 pt-2">
+               <button
                   type="submit"
                   className="btn btn-primary btn-lg"
-                  style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem' }}
+                  style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem', width:'200px'}}
                   onClick={handleSubmit}
                 >
                   Login
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-lg"
+                  style={{ marginLeft:'10px', paddingLeft: '2.5rem', paddingRight: '2.5rem', backgroundColor:'#55ab55' }}
+                  onClick={handleaccount}
+                >
+                  Create Account
                 </button>
               </div>
             </form>
