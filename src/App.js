@@ -6,12 +6,12 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
 //import Header from './Header';
 //import Footer from './Footer';
-import MainPage from './MainPage';
-import LoginPage from './LoginPage';
-import SignupPage from './SignupPage';
-import Home from './home';
-import Profile from './profile';
-import Scholarship from './scholarship';
+import MainPage from './pages/MainPage';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
+import Home from './pages/home';
+import Profile from './pages/profile';
+import Scholarship from './pages/scholarship';
 
 function App() {
   return (
