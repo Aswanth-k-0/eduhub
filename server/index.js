@@ -25,31 +25,33 @@ rl.on('line', (line) => {
     }
 });
 
-rl.on('close', () => {
-    console.log(jsonData);
-});
+// rl.on('close', () => {
+//     console.log(jsonData);
+// });
 
 
-const app = express();
+ const app = express();
+
+ app.use(
+     cors()
+    );
 
 app.get('/',(request,response)=>{
     console.log(request)
     return response.status(234).send('welcome');
 });
-app.get('/notifications',(request,response)=>{
+app.get('/notifications',(req,res)=>{
      res.json(jsonData);
 });
 
 
-mongoose
-.connect(mongoDBURL)
-.then(()=>{
-    console.log("connected to MongoDB");
-    app.listen(PORT,() => {
-        console.log(`Server is running on port ${PORT}`);
-    });
+ mongoose.connect(mongoDBURL)
+ .then(()=>{
+     console.log("connected to MongoDB");
 
-})
-.catch((error)=>{
-    console.log(error)
+ }).catch((error)=>{
+     console.log(error)
+ });
+app.listen(PORT,() => {
+    console.log(`Server is running on port ${PORT}`);
 });

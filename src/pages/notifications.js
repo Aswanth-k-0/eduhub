@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './css/header.css';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -6,7 +7,25 @@ import 'font-awesome/css/font-awesome.min.css';
 import './css/notifications.css';
 
 
-const notifications=() => {
+const Notifications=() => {
+  const [data, setData] = useState([]);
+  const [showAll, setShowAll] = useState(false);
+  useEffect(() => {
+      fetchNotifications();
+  }, []);
+
+  const fetchNotifications = async () => {
+      try {
+          const response = await axios.get('http://localhost:5555/notifications');
+          setData(response.data);
+          console.log("hiiiii"+response.data);
+      } catch (error) {
+          console.error('Error fetching data:', error);
+      }
+  };
+  const toggleShowAll = () => {
+    setShowAll(!showAll);
+  };
     return (
         <div>
         <header id="header" className="fixed-top">
@@ -43,38 +62,29 @@ const notifications=() => {
     <div className="container">
     <div className="main-body">
     
-          <div className="row gutters-sm">
-            <div className="col-md-8" >
-              <div className="car">
-                <div className="car-body">
-                  
+    <div className="row gutters-sm">
+            <div className="col-md-8">
+              {data.slice(0, showAll ? data.length : 5).map((item) => (
+                <div className="car" key={item.id}>
+                  <div className="car-body"  style={{     height: '30px' }}>
+                    <h5>{item.extracted_title}</h5>
+                    <p>Date: {item.date_day} {item.date_month_year}</p>
+                    <a href={item.document_link} target="_blank" rel="noopener noreferrer">
+                      View Document
+                    </a>
+                  </div>
                 </div>
-              </div>
-              <div className="car">
-          <div className="car-body">
-            {/* Content for the second card */}
-          </div>
-        </div>
-        <div className="car">
-          <div className="car-body">
-            {/* Content for the second card */}
-          </div>
-        </div>
-        <div className="car">
-          <div className="car-body">
-            {/* Content for the second card */}
-          </div>
-        </div>
-        <div className="car">
-          <div className="car-body">
-            {/* Content for the second card */}
-          </div>
-        </div>
+              ))}
+              {!showAll && data.length > 5 && (
+                <button className="btn btn-primary" onClick={toggleShowAll}>
+                  Show More
+                </button>
+              )}
             </div>
             
             
             <div className="col-md-4">
-            <div style={{ width: '300px', margin: '0px 0' }}>
+            <div style={{ width: '30px', margin: '0px 0' }}>
             <input
                 type="text"
                 id="searchInput1"
@@ -126,5 +136,5 @@ const notifications=() => {
     };
 
    
-export default notifications;
+export default Notifications;
 
