@@ -3,7 +3,7 @@ import './css/header.css';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-import './css/scholarship.css';
+import './css/jobs.css';
 
 const jobs=() => {
     return (
@@ -60,7 +60,7 @@ const jobs=() => {
                 </div>
               </div>
               <div className="card1 mt-3">
-                <h3>Preferences</h3>
+                <h3>Choices</h3>
                 <div className="col-sm-12 position-absolute bottom-0 end-0">
                       <a className="happy1 " target="__blank" href="#">Edit</a>
                 </div> 

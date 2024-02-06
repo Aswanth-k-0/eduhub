@@ -3,10 +3,10 @@ import './css/header.css';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-import './css/profile.css';
+import './css/notifications.css';
 
 
-const profile=() => {
+const notifications=() => {
     return (
         <div>
         <header id="header" className="fixed-top">
@@ -44,37 +44,40 @@ const profile=() => {
     <div className="main-body">
     
           <div className="row gutters-sm">
-            <div className="col-md-4 mb-3" >
-              <div className="card">
-                <div className="card-body">
-                  <div className="d-flex flex-column align-items-center text-center">
-                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" className="rounded-circle" width="150"/>
-                    <div className="mt-3">
-                      <h4>John Doe</h4>
-                      <p className="text-secondary mb-1">Full Stack Developer</p>
-                      <p className="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-                      <div className="row">
-                  </div>
-                    </div>
-                  </div>
+            <div className="col-md-8" >
+              <div className="car">
+                <div className="car-body">
+                  
                 </div>
               </div>
-              <div className="card1 mt-3">
-                <h3>Interests</h3>
-                <div className="col-sm-12 position-absolute bottom-0 end-0">
-                      <a className="happy1 " target="__blank" href="#">Edit</a>
-                </div> 
-              </div>
-              <div className="card1 mt-3">
-                <h3>Set Alert</h3>
-              </div>
+              <div className="car">
+          <div className="car-body">
+            {/* Content for the second card */}
+          </div>
+        </div>
+        <div className="car">
+          <div className="car-body">
+            {/* Content for the second card */}
+          </div>
+        </div>
+        <div className="car">
+          <div className="car-body">
+            {/* Content for the second card */}
+          </div>
+        </div>
+        <div className="car">
+          <div className="car-body">
+            {/* Content for the second card */}
+          </div>
+        </div>
             </div>
             
-            <div className="col-md-8">
-            <div style={{ position: 'relative', width: '500px', margin: '10px 0' }}>
+            
+            <div className="col-md-4">
+            <div style={{ width: '300px', margin: '0px 0' }}>
             <input
                 type="text"
-                id="searchInput"
+                id="searchInput1"
                 placeholder="Search..."
                 className="form-control form-control-sm"
             />
@@ -83,34 +86,28 @@ const profile=() => {
                 id="icon"
                 style={{
                     position: 'absolute',
-                    top: '50%',
-                    right: '-320px',
+                    top: '20%',
+                    right: '170px',
                     marginLeft: '500px',
                     transform: 'translateY(-50%)',
                     cursor: 'pointer',
                   }}
             ></i>
             </div>
+          
+          
             <br></br>
 
 
-              <div className="card mb-3">
-                <div className="card-body1 position-relative">
-                <h3>Basic Details</h3>
-                <div className="col-sm-12 position-absolute bottom-0 end-0">
-                      <a className="happ" target="__blank" href="#">Edit</a>
-                </div> 
-
-                </div>
+              <div className="car mb-3">
+              <div className="car-body1">
+                <h3>Set Alert</h3>
+              </div>
               </div>
               
-              <div className="card mb-3">
-                <div className="card-body1">
-                <h3>Notifications</h3>
-                  
-                <div className="col-sm-12 position-absolute bottom-0 end-0">
-                      <a className="happ2 btn btn-info " target="__blank" href="./profile">View All</a>
-                    </div>
+              <div className="car mb-3">
+                <div className="car-body1">
+                <h3>Alerts</h3>
                 </div>
               </div>
 
@@ -129,5 +126,5 @@ const profile=() => {
     };
 
    
-export default profile;
+export default notifications;
 

@@ -12,6 +12,8 @@ import SignupPage from './pages/SignupPage';
 import Home from './pages/home';
 import Profile from './pages/profile';
 import Scholarship from './pages/scholarship';
+import Jobs from './pages/jobs';
+import Notifications from './pages/notifications';
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path="/home" element={<Home/>} />
           <Route path="/profile" element={<Profile/>} />
           <Route path="/scholarship" element={<Scholarship/>} />
+          <Route path="/jobs" element={<Jobs/>} />
+          <Route path="/notifications" element={<Notifications/>} />
            
 
           </Routes>
