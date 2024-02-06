@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import fs from 'fs';
 import readline from 'readline';
+import { get } from "http";
 
 const jsonlFilePath = './output.jsonl';
 
@@ -34,6 +35,9 @@ const app = express();
 app.get('/',(request,response)=>{
     console.log(request)
     return response.status(234).send('welcome');
+});
+app.get('/notifications',(request,response)=>{
+     res.json(jsonData);
 });
 
 
