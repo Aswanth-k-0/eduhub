@@ -23,11 +23,6 @@ const LoginPage = () => {
     navigate('/home');
   };
 
-  const handleaccount = (event) => {
-    
-    navigate('/Signup');
-  };
-
   return (
     <div>
       <Header />
@@ -103,14 +98,15 @@ const LoginPage = () => {
                 >
                   Login
                 </button>
+                <Link to={'/Signup'}>
                 <button
                   type="submit"
                   className="btn btn-primary btn-lg"
                   style={{ marginLeft:'10px', paddingLeft: '2.5rem', paddingRight: '2.5rem', backgroundColor:'#55ab55' }}
-                  onClick={handleaccount}
                 >
                   Create Account
                 </button>
+                </Link>
               </div>
             </form>
           </div>
