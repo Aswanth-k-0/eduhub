@@ -1,5 +1,5 @@
 import {React} from 'react';
-import ReactDOM from "react-dom/client";
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 //import { Routes,Route} from "react-router-dom";
 import './App.css';
@@ -13,6 +13,7 @@ import Profile from './pages/profile';
 import Scholarship from './pages/scholarship';
 import Jobs from './pages/jobs';
 import Notifications from './pages/notifications';
+import Preference from './pages/preference';
 
 function App() {
   return (
@@ -27,7 +28,7 @@ function App() {
           <Route path="/scholarship" element={<Scholarship/>} />
           <Route path="/jobs" element={<Jobs/>} />
           <Route path="/notifications" element={<Notifications/>} />
-           
+          <Route path="/preference" element={<Preference/>}/>
 
           </Routes>
           </BrowserRouter>

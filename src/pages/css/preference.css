@@ -1,0 +1,13 @@
+.form{
+    margin-left: 40px;
+    margin-right: 40px;
+}
+label{
+    font-weight: 600!important;
+}
+
+.lucky{
+    border: 2px black;
+    border-radius: 10px;
+    background-color: white;
+}
