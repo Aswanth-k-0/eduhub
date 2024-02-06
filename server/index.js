@@ -2,6 +2,32 @@ import express, { request, response } from "express";
 import { PORT,mongoDBURL } from "./config.js"; 
 import mongoose from "mongoose";
 import cors from "cors";
+import fs from 'fs';
+import readline from 'readline';
+
+const jsonlFilePath = './output.jsonl';
+
+const rl = readline.createInterface({
+    input: fs.createReadStream(jsonlFilePath),
+    crlfDelay: Infinity 
+});
+
+
+let jsonData = [];
+
+rl.on('line', (line) => {
+    try {
+        const jsonObject = JSON.parse(line);
+        jsonData.push(jsonObject);
+    } catch (error) {
+        console.error('Error parsing JSON:', error);
+    }
+});
+
+rl.on('close', () => {
+    console.log(jsonData);
+});
+
 
 const app = express();
 
