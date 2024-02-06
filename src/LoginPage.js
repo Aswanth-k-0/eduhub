@@ -86,14 +86,22 @@ const LoginPage = () => {
                 </a>
               </div>
 
-              <div className="text-center text-lg-start mt-4 pt-2">
-                <button
+              <div className="text-center text-lg-start d-flex justify-content-between align-items-center mt-4 pt-2">
+               <button
                   type="submit"
                   className="btn btn-primary btn-lg"
-                  style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem' }}
+                  style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem', width:'200px'}}
                   onClick={handleSubmit}
                 >
                   Login
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-lg"
+                  style={{ marginLeft:'10px', paddingLeft: '2.5rem', paddingRight: '2.5rem', backgroundColor:'#55ab55' }}
+                  onClick={handleSubmit}
+                >
+                  Create Account
                 </button>
               </div>
             </form>
