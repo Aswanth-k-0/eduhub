@@ -10,7 +10,9 @@ import { v4 as uuidv4 } from 'uuid';
 import crypto from 'crypto';
 import {Schema} from './models/schema.js';
 import { userSchema } from "./models/userschema.js";
+import {connectToDatabase} from'./db.js';
 
+connectToDatabase();
 
 function generateUserId() {
     // Generate a UUID
@@ -40,30 +42,6 @@ app.get('/notifications',(req,res)=>{
 });
 
 
- mongoose.connect('mongodb://127.0.0.1:27017/edu-hub')
-
- .then(()=>{
-     console.log("connected to MongoDB");
-     // Accessing a specific collection directly
-     const db = mongoose.connection.getClient(); // Access the MongoClient instance
-
-     const collectionName = 'user'; // Specify the collection name
-     const collection = db.db().collection(collectionName); // Access the collection
-
-     // Perform operations on the collection
-     // For example, you can query, insert, update, or delete documents
-     collection.find({}).toArray()
-         .then(documents => {
-             console.log("Documents in collection:", documents);
-         })
-         .catch(error => {
-             console.error("Error querying collection:", error);
-         });
-    
-
- }).catch((error)=>{
-     console.log(error)
- });
 
 
   const User = mongoose.model('User', userSchema);
