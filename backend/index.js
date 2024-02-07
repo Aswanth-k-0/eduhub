@@ -110,11 +110,7 @@ app.use((err, req, res, next) => {
         next(err);
     }
 });
-  app.get('/logi',async(req,res)=>{
-    try{
-
-    }
-  })
+  
  
   
   app.post('/saveData', async (req, res) => {
