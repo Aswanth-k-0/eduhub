@@ -30,7 +30,7 @@ const home=() => {
               <a className="nav-link" href="/Notifications">Notifications</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#" data-target="#myModal" data-toggle="modal">Logout</a>
+              <a className="nav-link" href="#" data-target="#myModal" data-toggle="modal"><Link to="/LoginPage">Logout</Link></a>
             </li>
           </ul>
           <i className="bi bi-list mobile-nav-toggle"></i>

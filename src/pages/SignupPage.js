@@ -95,10 +95,13 @@ const SignupPage = () => {
 
         <br/>
         <center>
-          <button type="submit" style={{width:'200px'}} className="btn btn-primary">Save and continue</button>
+        <Link to={'/home'}>
+          <button type="submit"  style={{width:'200px'}} className="btn btn-primary">Save and continue</button>
+        </Link>
           <button type="clear" style={{width:'200px', marginLeft:'10px'}} className="btn btn-primary">Clear</button>
         </center>
-      
+      <br></br>
+      <br></br>
     </div>
     </div>
   );
