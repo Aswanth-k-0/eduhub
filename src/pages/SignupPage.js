@@ -1,11 +1,67 @@
-import React from 'react';
+
 import './css/header.css';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
+import axios from 'axios';
 
 const SignupPage = () => {
-  return (
+  const [formData, setFormData] = useState({
+  name: '',
+  mobileNumber: '',
+  occupation: '',
+  email: '',
+  state: '',
+  district: '',
+  photo: null,
+  username: '',
+  password: '',
+});
+
+const [files, setFiles] = useState(null);
+
+const navigate = useNavigate();
+
+const handleChange = (e) => {
+  const { name, value } = e.target;
+  if (name === 'photo') {
+    setFiles(e.target.files); // Set the files state with the uploaded files
+    setFormData({ ...formData, photo: e.target.files[0] }); // Set the photo in formData
+  } else {
+    setFormData({ ...formData, [name]: value });
+  }
+};
+
+const handleSubmit = async (e) => {
+
+  e.preventDefault();
+  if (formData.password !== formData['re-password']) {
+    alert("Passwords do not match. Please make sure the passwords match.");
+    return; // Prevent form submission
+  }
+
+  try {
+    const postData = new FormData();
+    for (const key in formData) {
+      postData.append(key, formData[key]);
+    }
+    await axios.post('http://localhost:8888/saveUser', postData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    // Redirect to home page or show success message
+    navigate('/preference'); 
+
+  } catch (error) {
+    console.error('Error:', error);
+    // Handle error (e.g., display error message)
+  }
+};
+
+return (
 
     <div>
     <header id="header" className="fixed-top">
@@ -27,81 +83,78 @@ const SignupPage = () => {
 
 <br/><br/>
 <br/>
-    <div className="form"style={{margin:'10px' }}>
-        <div className="row" style={{marginTop:'20px'}}>
+<div className="form" style={{ margin: '10px' }}>
+      <form onSubmit={handleSubmit} >
+        <div className="form row">
           <div className="form-group col-md-4">
-            <label htmlFor="cname">Name</label>
-            <input type="name" className="form-control" id="cname" placeholder="Name"/>
+            <label htmlFor="name">Name</label>
+            <input type="text" id="name" name="name" className="form-control" value={formData.name} onChange={handleChange} />
           </div>
           <div className="form-group col-md-4">
-            <label htmlFor="phno">Mobile Number</label>
-            <input type="name" className="form-control" id="phno" placeholder="Number"/>
+            <label htmlFor="mobileNumber">Mobile Number</label>
+            <input type="text" id="mobileNumber" name="mobileNumber" className="form-control" value={formData.mobileNumber} onChange={handleChange} />
           </div>
           <div className="form-group col-md-4">
-            <label htmlFor="Occupation">Occupation</label>
-            <input type="text" className="form-control" id="Occupation" placeholder="Occupation"/>
+            <label htmlFor="occupation">Occupation</label>
+            <input type="text" id="occupation" name="occupation" className="form-control" value={formData.occupation} onChange={handleChange} />
           </div>
         </div>
 
-        <div className="row" style={{marginTop:'20px'}}>
+        <div className="form row" style={{marginTop:'20px'}}>
           <div className="form-group col-md-4">
             <label htmlFor="email">Email</label>
-            <input type="email" className="form-control" id="email" placeholder="Email"/>
+            <input type="email" id="email" name="email" className="form-control" value={formData.email} onChange={handleChange} />
           </div>
           <div className="form-group col-md-4">
             <label htmlFor="state">State</label>
-            <input type="text" className="form-control" id="state" placeholder="State"/>
+            <input type="text" id="state" name="state" className="form-control" value={formData.state} onChange={handleChange} />
           </div>
           <div className="form-group col-md-4">
-            <label htmlFor="image1" className="form-label">Photo</label>
-            <input className="form-control form-control-sm" id="image1" type="file" placeholder="Size 1360 X 245"/>
+            <label htmlFor="photo" className="form-label">Photo</label>
+            <input className="form-control form-control-sm" style={{height:'35px', paddingTop:'8px'}} type="file" id="photo" name="photo" onChange={handleChange} />
           </div>
         </div>
 
-        <div className="row" style={{marginTop:'20px'}}>
+        <div className="form row" style={{marginTop:'20px'}}>
           <div className="form-group col-md-4">
-            <label htmlFor="District">District</label>
-            <input type="text" className="form-control" id="District" placeholder="District"/>
+            <label htmlFor="district">District</label>
+            <input type="text" id="district" name="district" className="form-control" value={formData.district} onChange={handleChange} />
           </div>
           <div className="form-group col-md-4">
             <label htmlFor="username">Username</label>
-            <input type="username" className="form-control" id="username" placeholder="Username"/>
+            <input type="text" id="username" name="username" className="form-control" value={formData.username} onChange={handleChange} />
           </div>
         </div>
 
-        <div className="row" style={{marginTop:'20px'}}>
+        <div className="form row" style={{marginTop:'20px'}}>
           <div className="form-group col-md-4">
             <label htmlFor="password">Password</label>
-            <input type="password" className="form-control" id="password" placeholder="Password"/>
+            <input type="password" id="password" name="password" className="form-control" value={formData.password} onChange={handleChange} />
           </div>
           <div className="form-group col-md-4">
             <label htmlFor="re-password">Re-Enter Password</label>
-            <input type="password" className="form-control" id="re-password" placeholder="Password"/>
+            <input type="password" id="re-password" name="re-password" className="form-control" value={formData.repassword} onChange={handleChange} />
           </div>
         </div>
 
-        <div style={{marginTop:'20px'}}>
-          Do you want to save
+        <div style={{marginTop:'20px', marginLeft:'50px'}}>
+          Do you want to save?
           <div className="form-check form-check-inline">
-            <input className="form-check-input" type="radio" name="inlineRadioOptions" id="yes" value="yes"/>
-            <label className="form-check-label" htmlFor="inlineRadio1">Yes</label>
+            <input type="radio" id="yes" name="saveOption" className="form-check-input" value="yes" />
+            <label htmlFor="yes" className="form-check-label">Yes</label>
           </div>
-
           <div className="form-check form-check-inline">
-            <input className="form-check-input" type="radio" name="inlineRadioOptions" id="no" value="no"/>
-            <label className="form-check-label" htmlFor="inlineRadio2">No</label>
+            <input type="radio" id="no" name="saveOption" className="form-check-input" value="no" />
+            <label htmlFor="no" className="form-check-label">No</label>
           </div>
         </div>
 
         <br/>
         <center>
-        <Link to={'/home'}>
-          <button type="submit"  style={{width:'200px'}} className="btn btn-primary">Save and continue</button>
-        </Link>
-          <button type="clear" style={{width:'200px', marginLeft:'10px'}} className="btn btn-primary">Clear</button>
+          <button type="submit" style={{ width: '200px' }} className="btn btn-primary" onClick={handleSubmit}>Save and continue</button>
+          <button type="clear" style={{ width: '200px', marginLeft: '10px' }} className="btn btn-primary">Clear</button>
         </center>
-      <br></br>
-      <br></br>
+      </form>
     </div>
     </div>
   );
