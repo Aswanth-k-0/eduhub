@@ -1,7 +1,6 @@
 
 import './css/header.css';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
@@ -23,6 +22,7 @@ const SignupPage = () => {
 const [files, setFiles] = useState(null);
 
 const navigate = useNavigate();
+
 
 const handleChange = (e) => {
   const { name, value } = e.target;
@@ -50,11 +50,12 @@ const handleSubmit = async (e) => {
     await axios.post('http://localhost:8888/saveUser', postData, {
       headers: {
         'Content-Type': 'multipart/form-data',
+       
       },
+      
     });
     // Redirect to home page or show success message
-    navigate('/preference'); 
-
+    navigate('/preference', { state: { formData } });
   } catch (error) {
     console.error('Error:', error);
     // Handle error (e.g., display error message)
