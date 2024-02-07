@@ -80,20 +80,11 @@ app.get('/notifications',(req,res)=>{
 
     try {
       // Create a new user instance
-      const newUser = new User({
-        name: req.body.name,
-        mobileNumber: req.body.mobileNumber,
-        occupation: req.body.occupation,
-        email: req.body.email,
-        state: req.body.state,
-        district: req.body.district,
-        username: req.body.username,
-        password: req.body.password,
-        photo: req.file ? req.file.path : '', // Store the file path if uploaded
-        id:userId
-      });
-  
-      await newUser.save();
+      const db = mongoose.db();
+      const collection = db.collection('mycollection');
+
+      const newData = req.body; // Assuming data is sent in the request body
+      const result = await collection.insertOne(newData);
     res.status(201).json({ message: 'User saved successfully' });
   } catch (error) {
     console.error('Error saving user:', error);
@@ -138,7 +129,7 @@ app.use((err, req, res, next) => {
 
       res.status(200).send('Data saved successfully');
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', error); 
       res.status(500).send('Internal Server Error');
     }
   });
