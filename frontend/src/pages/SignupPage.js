@@ -5,8 +5,23 @@ import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import axios from 'axios';
+import './css/preference.css';
 
 const SignupPage = () => {
+  const options = ['Geci Events', 'Geci Announcements', 'Scholarships', 'Jobs']; // Sample options
+    const [selectedOptions, setSelectedOptions] = useState([]);
+    const [inputValue, setInputValue] = useState('');
+    const handleSelectChange = (e) => {
+      const value = e.target.value;
+      if (value !== '' && !selectedOptions.includes(value)) {
+        setSelectedOptions([...selectedOptions, value]);
+        setInputValue(''); // Clear input value after selection
+      }
+    };
+  
+    const handleRemoveOption = (option) => {
+      setSelectedOptions(selectedOptions.filter((item) => item !== option));
+    };
   const [formData, setFormData] = useState({
   name: '',
   mobileNumber: '',
@@ -64,7 +79,7 @@ const handleSubmit = async (e) => {
 
 return (
 
-    <div>
+    <div style={{overflowX:'hidden'}}>
     <header id="header" className="fixed-top">
   <div className="container d-flex align-items-start">
     <a href="#" className="logo"><img src="/assets/img/logo.png" alt="" className="img-fluid" /></a>
@@ -122,12 +137,52 @@ return (
             <input type="text" id="district" name="district" className="form-control" value={formData.district} onChange={handleChange} />
           </div>
           <div className="form-group col-md-4">
+        <label htmlFor="role">Role</label>
+        <input type="text" className="form-control" id="role" placeholder="Role" value={formData.role} onChange={handleChange} name="role" />
+      </div>
+      <div className="form-group col-md-4">
+        <label htmlFor="designation" >Designation</label>
+        <select id="designation" name="designation" className="form-control form-control-lg" value={formData.designation} onChange={handleChange} >
+          <option value="Student">Student</option>
+          <option value="Placement officer">Placement officer</option>
+          <option value="Worker">Worker</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+          
+        </div>
+        <div className="row" style={{ marginTop: '20px', marginLeft:'40px' }}>
+      <div className="form-group col-md-4">
+        <label htmlFor="updates">Choose Updates</label>
+        <select className="form-control" value={inputValue} onChange={handleSelectChange} style={{ height: '50px',width:'95%' }}>
+          <option value="">Choose Updates</option>
+          {options.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      </div>
+    </div>
+
+    <div className="form-group col-md-12" style={{ marginTop: '20px', marginLeft:'50px' }}>
+      <label>Selected Options:</label>
+      <div style={{ backgroundColor: 'white', width: '90%', height: '300px', borderRadius: '15px', padding: '30px' }}>
+        {selectedOptions.map((option) => (
+          <span key={option} style={{ paddingRight: '50px' }}>
+            {option}
+            <button onClick={() => handleRemoveOption(option)} style={{ backgroundColor: 'black', width: '35px', height: '35px', textAlign: 'center', alignContent: 'center', marginLeft: '10px', textAlign: 'center' }}>X</button>
+            {'  '}
+          </span>
+        ))}
+      </div>
+    </div>
+
+        <div className="form row" style={{marginTop:'20px'}}>
+        <div className="form-group col-md-4">
             <label htmlFor="username">Username</label>
             <input type="text" id="username" name="username" className="form-control" value={formData.username} onChange={handleChange} />
           </div>
-        </div>
-
-        <div className="form row" style={{marginTop:'20px'}}>
           <div className="form-group col-md-4">
             <label htmlFor="password">Password</label>
             <input type="password" id="password" name="password" className="form-control" value={formData.password} onChange={handleChange} />
@@ -157,7 +212,7 @@ return (
         </center>
       </form>
     </div>
-    </div>
+  </div>
   );
 };
 
