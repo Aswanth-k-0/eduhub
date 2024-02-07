@@ -1,7 +1,7 @@
 import React,{ useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 import './css/header.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
@@ -12,9 +12,10 @@ const Preference = () => {
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
 
+    const location = useLocation();
     const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState(location.state.formData ||{
       role: '',
       designation: 'Student', // Default value
       fieldOfInterest: '',
@@ -34,8 +35,7 @@ const Preference = () => {
     const handleChange = (e) => {
       const { name, value } = e.target;
       setFormData({ ...formData, [name]: value });
-    
-    };
+  };
 
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -44,7 +44,8 @@ const Preference = () => {
         for (const key in formData) {
       postData.append(key, formData[key]);
     }
-    await axios.post('http://localhost:8888/saveUser', postData, {
+    const combinedData = { ...location.state.formData, ...formData };
+    await axios.post('http://localhost:8888/saveUser', combinedData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
