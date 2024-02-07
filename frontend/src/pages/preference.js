@@ -1,6 +1,8 @@
-import React, { useState} from 'react';
-import './css/header.css';
+import React,{ useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import './css/header.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import './css/preference.css'; // Updated CSS file name
@@ -9,7 +11,15 @@ const Preference = () => {
     const options = ['Geci Events', 'Geci Announcements', 'Scholarships', 'Jobs']; // Sample options
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
-  
+
+    const navigate = useNavigate();
+
+    const [formData, setFormData] = useState({
+      role: '',
+      designation: 'Student', // Default value
+      fieldOfInterest: '',
+    });
+
     const handleSelectChange = (e) => {
       const value = e.target.value;
       if (value !== '' && !selectedOptions.includes(value)) {
@@ -21,7 +31,35 @@ const Preference = () => {
     const handleRemoveOption = (option) => {
       setSelectedOptions(selectedOptions.filter((item) => item !== option));
     };
-  
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setFormData({ ...formData, [name]: value });
+    
+    };
+
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      try {
+        const postData = new FormData();
+        for (const key in formData) {
+      postData.append(key, formData[key]);
+    }
+    await axios.post('http://localhost:8888/saveUser', postData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    navigate('/LoginPage'); // Redirect to success page
+  }catch (error) {
+        console.error('Error:', error);
+        // Handle error (e.g., display error message)
+      }
+    };
+    
+    
+
+    
+      
     return (
       <div>
         <header id="header" className="fixed-top">
@@ -45,31 +83,31 @@ const Preference = () => {
 <br/>
 
 <div className="form">
-        <div className="row" style={{marginTop:'20px'}}>
-          <div className="form-group col-md-4">
-            <label htmlFor="role">Role</label>
-            <input type="name" style={{height:'50px'}} className="form-control" id="role" placeholder="Name"/>
-          </div>
-          <div className="form-group col-md-4">
-            <label htmlFor="desg">Designation</label>
-            <select id="users" name="users" class="form-control form-control-lg" style={{height:'15px'}}>
-                      <option>Student</option>
-                      <option>Placement officer</option>
-                      <option>Worker</option>
-                      <option>Other</option>
-            </select>
-          </div>
-          <div className="form-group col-md-4">
-            <label htmlFor="Occupation">Field Of Interest</label>
-            <input type="text" className="form-control" style={{height:'50px'}} id="interest" placeholder="Field Of Interest"/>
-          </div>
-        </div>
-</div>
-<br/>
-<br/>
-<div className="row">
-<div className="form form-group col-md-4">
-        <select className="form-control" value={inputValue} onChange={handleSelectChange} style={{height:'50px',width:'95%' }}>
+  <form onSubmit={handleSubmit}>
+    <div className="row" style={{ marginTop: '20px' }}>
+      <div className="form-group col-md-4">
+        <label htmlFor="role">Role</label>
+        <input type="text" style={{ height: '50px' }} className="form-control" id="role" placeholder="Role" value={formData.role} onChange={handleChange} name="role" />
+      </div>
+      <div className="form-group col-md-4">
+        <label htmlFor="designation">Designation</label>
+        <select id="designation" name="designation" className="form-control form-control-lg" style={{ height: '50px' }} value={formData.designation} onChange={handleChange}>
+          <option value="Student">Student</option>
+          <option value="Placement officer">Placement officer</option>
+          <option value="Worker">Worker</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div className="form-group col-md-4">
+        <label htmlFor="fieldOfInterest">Field Of Interest</label>
+        <input type="text" className="form-control" style={{ height: '50px' }} id="fieldOfInterest" placeholder="Field Of Interest" value={formData.fieldOfInterest} onChange={handleChange} name="fieldOfInterest" />
+      </div>
+    </div>
+
+    <div className="row" style={{ marginTop: '20px' }}>
+      <div className="form-group col-md-4">
+        <label htmlFor="updates">Choose Updates</label>
+        <select className="form-control" value={inputValue} onChange={handleSelectChange} style={{ height: '50px' }}>
           <option value="">Choose Updates</option>
           {options.map((option) => (
             <option key={option} value={option}>
@@ -77,32 +115,31 @@ const Preference = () => {
             </option>
           ))}
         </select>
-        </div>
-        </div>
-        <br />
-        <br />
-        
-        <div className="form form-group col-md-12" >
-          <label>Selected Options:</label>
-          
-          <div style={{backgroundColor:'white', width:'1450px', height:'300px', borderRadius:'15px', padding:'30px'}}>
-            {selectedOptions.map((option) => (
-              <span key={option} style={{paddingRight:'50px'}}>
-                {option}
-                <button onClick={() => handleRemoveOption(option)} style={{backgroundColor:'black', width:'35px', height:'35px', textAlign:'center',alignContent:'center', marginLeft:'10px', textAlign:'center'}}>X</button>
-                {'  '}
-              </span>
-            ))}
-          </div>
-        </div>
-        <br/>
-        <center>
-        <Link to={'/home'}>
-          <button type="submit"  style={{width:'200px'}} className="btn btn-primary">Save and continue</button>
-        </Link>
-          <button type="clear" style={{width:'200px', marginLeft:'10px'}} className="btn btn-primary">Clear</button>
-        </center>
       </div>
+    </div>
+
+    <div className="form-group col-md-12" style={{ marginTop: '20px' }}>
+      <label>Selected Options:</label>
+      <div style={{ backgroundColor: 'white', width: '100%', height: '300px', borderRadius: '15px', padding: '30px' }}>
+        {selectedOptions.map((option) => (
+          <span key={option} style={{ paddingRight: '50px' }}>
+            {option}
+            <button onClick={() => handleRemoveOption(option)} style={{ backgroundColor: 'black', width: '35px', height: '35px', textAlign: 'center', alignContent: 'center', marginLeft: '10px', textAlign: 'center' }}>X</button>
+            {'  '}
+          </span>
+        ))}
+      </div>
+    </div>
+
+    <div style={{ marginTop: '20px' }}>
+      <center>
+        <button type="submit" style={{ width: '200px' }} className="btn btn-primary">Save and continue</button>
+        <button type="clear" style={{ width: '200px', marginLeft: '10px' }} className="btn btn-primary">Clear</button>
+      </center>
+    </div>
+  </form>
+</div>
+</div>
     );
 };
 
