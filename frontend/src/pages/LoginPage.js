@@ -28,7 +28,7 @@ const LoginPage = () => {
       });
       console.log(response);
       // If login successful, navigate to the home page
-      navigate('/home');
+      navigate('/home', { state: { userData: response.data  } })
     } catch (error) {
       // If login failed, display an error message
       setError('Incorrect username or password');

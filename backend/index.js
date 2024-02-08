@@ -158,7 +158,8 @@ app.use((err, req, res, next) => {
         // Passwords don't match
         return res.status(401).json({ error: 'Incorrect username or password' });
       }
-      return res.status(200).json({ message: 'Login successful' });
+      return res.status(200).json({ message: 'Login successful', user });
+
     } catch (error) {
       console.error('Login error:', error);
       return res.status(500).json({ error: 'Internal server error' });

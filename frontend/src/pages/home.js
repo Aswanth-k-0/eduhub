@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import './css/header.css';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -6,7 +7,10 @@ import 'font-awesome/css/font-awesome.min.css';
 import './css/home.css';
 
 
-const home=() => {
+const Home = ({ location }) => {
+  // Extract user data from location state
+  const userData = location.state && location.state.userData;
+
     return (
         <div>
         <header id="header" className="fixed-top">
@@ -47,10 +51,11 @@ const home=() => {
             <div className="col-md-4 mb-3" >
               <div className="card">
                 <div className="card-body">
+                {userData && (
                   <div className="d-flex flex-column align-items-center text-center">
                     <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" className="rounded-circle" width="150"/>
                     <div className="mt-3">
-                      <h4>John Doe</h4>
+                      <h4>{userData?.name}</h4>
                       <p className="text-secondary mb-1">Full Stack Developer</p>
                       <p className="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
                       <div className="row">
@@ -58,8 +63,10 @@ const home=() => {
                       <a className="btn btn-info " target="__blank" href="./profile">View Full Profile</a>
                     </div>
                   </div>
+                  
                     </div>
                   </div>
+                  )}
                 </div>
               </div>
               <div className="card1 mt-3">
@@ -147,5 +154,5 @@ const home=() => {
     };
 
    
-export default home;
+export default Home;
 
