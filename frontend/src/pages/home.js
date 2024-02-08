@@ -65,7 +65,7 @@ const Home = () => {
                       <p className="text-muted font-size-sm">{userData.user.role}</p>
                       <div className="row">
                     <div className="col-sm-12">
-                      <a className="btn btn-info " target="__blank" href="./profile">View Full Profile</a>
+                      <a className="btn btn-info " target="__blank"><Link to={{pathname:"/profile",state: {userData:userData } }}>View Full Profile</Link></a>
                     </div>
                   </div>
                   

@@ -2,16 +2,12 @@ import express, { request, response } from "express";
 import { PORT} from "./config.js"; 
 import mongoose from "mongoose";
 import cors from "cors";
-//import fs from 'fs';
-import readline from 'readline';
-//import { get } from "http";
 import multer from 'multer'
 import { v4 as uuidv4 } from 'uuid';
 import crypto from 'crypto';
-import bcrypt from 'bcrypt';
 import { userSchema } from "./models/userschema.js";
 import {connectToDatabase} from'./db.js';
-import {retrieveUser} from'./routes/retriveuserdata.js';
+
 
 connectToDatabase();
 
