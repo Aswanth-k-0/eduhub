@@ -13,15 +13,22 @@ const LoginPage = () => {
   // State variables to store username and password
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const [responseData, setResponseData] = useState('')
   // Function to handle form submission
-  const handleSubmit = (event) => {
+  const handleSubmit =async (event) => {
     event.preventDefault(); // Prevent default form submission
-    console.log('Username:', username);
-    console.log('Password:', password);
+    
+    try {
+      const response = await axios.post('/api/data', { username }); // Send a POST request with input data
+      setResponseData(response.data); // Update state with the response data
+      console.log('Response from server:', response.data); // Print response data to the console
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
     // You can add your login logic here (e.g., sending data to a server)
-    navigate('/home');
+    //navigate('/home');
   };
+ 
 
   return (
     <div>

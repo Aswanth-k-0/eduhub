@@ -11,8 +11,12 @@ import crypto from 'crypto';
 import {Schema} from './models/schema.js';
 import { userSchema } from "./models/userschema.js";
 import {connectToDatabase} from'./db.js';
+import {retrieveUser} from'./routes/retriveuserdata.js';
 
 connectToDatabase();
+const doc=await retrieveUser();
+console.log(doc);
+
 
 function generateUserId() {
     // Generate a UUID
@@ -41,7 +45,8 @@ app.get('/notifications',(req,res)=>{
      res.json(jsonData);
 });
 
-
+app.post('/userdata',(req,res)=>{
+  res.json(docs);});
 
 
   const User = mongoose.model('User', userSchema);
