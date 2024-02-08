@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import './css/log.css';
 import Header from './Header';
 import Footer from './Footer';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import myimg from "./assets/img/login.png";
 
@@ -13,22 +14,27 @@ const LoginPage = () => {
   // State variables to store username and password
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [responseData, setResponseData] = useState('')
+  const [error, setError] = useState(null);
   // Function to handle form submission
-  const handleSubmit =async (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent default form submission
-    
+    console.log('Username:', username);
+    console.log('Password:', password);
     try {
-      const response = await axios.post('/api/data', { username }); // Send a POST request with input data
-      setResponseData(response.data); // Update state with the response data
-      console.log('Response from server:', response.data); // Print response data to the console
+      // Make a POST request to your backend API endpoint
+      const response = await axios.post('http://localhost:8888/login', {
+        username,
+        password
+      });
+      console.log(response);
+      // If login successful, navigate to the home page
+      navigate('/home');
     } catch (error) {
-      console.error('Error fetching data:', error);
+      // If login failed, display an error message
+      setError('Incorrect username or password');
     }
-    // You can add your login logic here (e.g., sending data to a server)
-    //navigate('/home');
   };
- 
+    // You can add your login logic here (e.g., sending data to a server)
 
   return (
     <div>
@@ -58,7 +64,7 @@ const LoginPage = () => {
                   name="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  // required
+                   required
                 />
                 
               </div>
@@ -75,7 +81,7 @@ const LoginPage = () => {
                   name="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  // required
+                  required
                 />
                 
               </div>
