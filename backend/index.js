@@ -14,9 +14,6 @@ import {connectToDatabase} from'./db.js';
 import {retrieveUser} from'./routes/retriveuserdata.js';
 
 connectToDatabase();
-const doc=await retrieveUser();
-console.log(doc);
-
 
 function generateUserId() {
     // Generate a UUID
@@ -139,6 +136,7 @@ app.use((err, req, res, next) => {
       if (password!=user.password) {
         // Passwords don't match
         return res.status(401).json({ error: 'Incorrect username or password' });
+        console.log("here");
       }
       return res.status(200).json({ message: 'Login successful' });
     } catch (error) {
