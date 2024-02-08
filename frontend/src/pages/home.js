@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './css/header.css';
+import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import './css/home.css';
 
 
-const Home = ({ location }) => {
+const Home = () => {
   // Extract user data from location state
-  const userData = location.state && location.state.userData;
+  const location = useLocation();
 
+  // Access the state object and userData if it exists
+  const userData = location.state ? location.state.userData : null;
+  console.log('hi',userData.user.name);
     return (
         <div>
         <header id="header" className="fixed-top">
@@ -53,11 +57,11 @@ const Home = ({ location }) => {
                 <div className="card-body">
                 {userData && (
                   <div className="d-flex flex-column align-items-center text-center">
-                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" className="rounded-circle" width="150"/>
+                    <img src={userData.user.photo}  alt="Admin" className="rounded-circle" width="150"/>
                     <div className="mt-3">
-                      <h4>{userData?.name}</h4>
-                      <p className="text-secondary mb-1">Full Stack Developer</p>
-                      <p className="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
+                      <h4>{userData.user.name}</h4>
+                      <p className="text-secondary mb-1">{userData.user.designation}</p>
+                      <p className="text-muted font-size-sm">{userData.user.role}</p>
                       <div className="row">
                     <div className="col-sm-12">
                       <a className="btn btn-info " target="__blank" href="./profile">View Full Profile</a>

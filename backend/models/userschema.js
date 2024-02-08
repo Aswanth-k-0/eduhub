@@ -13,7 +13,6 @@ const userSchema = new mongoose.Schema({
     role: String,
     designation: String,
     Updates_required: String,
-
   });
 
   export {userSchema};

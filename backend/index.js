@@ -52,13 +52,13 @@ app.get('/notifications',(req,res)=>{
 
      // Perform operations on the collection
      // For example, you can query, insert, update, or delete documents
-     collection.find({}).toArray()
-         .then(documents => {
-             console.log("Documents in collection:", documents);
-         })
-         .catch(error => {
-             console.error("Error querying collection:", error);
-         });
+    //  collection.find({}).toArray()
+    //      .then(documents => {
+    //          console.log("Documents in collection:", documents);
+    //      })
+    //      .catch(error => {
+    //          console.error("Error querying collection:", error);
+    //      });
     
 
  }).catch((error)=>{
@@ -67,30 +67,71 @@ app.get('/notifications',(req,res)=>{
 
 
   const User = mongoose.model('Users', userSchema);
-  const upload = multer({ dest: 'uploads/' });
-  
-  app.use(express.urlencoded({ extended: true }));
-  app.use(express.json());
-  // API endpoint to save user data
-  app.post('/saveUser', upload.single('photo'), async (req, res) => {
-    console.log(req.body);
-    const userId = generateUserId();
-    console.log(userId);
 
+  const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/'); // Specify the directory where uploaded files should be stored
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname); // Use the original file name for storing
+    }
+  });
 
-    try {
-      // Create a new user instance
-      const db = mongoose.connection.getClient();
-      const collection = db.db().collection('users');
+  const upload = multer({ storage: storage });
 
-      const newData = req.body; // Assuming data is sent in the request body
-      const result = await collection.insertOne(newData);
+app.post('/saveUser', upload.single('photo'), async (req, res) => {
+  try {
+    const userId = generateUserId(); // Generate user ID
+    const { name, mobileNumber, occupation, email, state, district, username, password, role, designation, updates_required } = req.body;
+
+    // Create a new user instance with photo path
+    const newUser = new User({
+      name,
+      mobileNumber,
+      occupation,
+      email,
+      state,
+      photo: req.file.path, // Save the file path in the photo field
+      district,
+      username,
+      password,
+      role,
+      designation,
+      updates_required
+    });
+
+    // Save the user to the database
+    await newUser.save();
+
     res.status(201).json({ message: 'User saved successfully' });
   } catch (error) {
     console.error('Error saving user:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
-}); 
+});
+  
+  app.use(express.urlencoded({ extended: true }));
+  app.use(express.json());
+  // API endpoint to save user data
+//   app.post('/saveUser', upload.single('photo'), async (req, res) => {
+//     console.log(req.body);
+//     const userId = generateUserId();
+//     console.log(userId);
+
+
+//     try {
+//       // Create a new user instance
+//       const db = mongoose.connection.getClient();
+//       const collection = db.db().collection('users');
+
+//       const newData = req.body; // Assuming data is sent in the request body
+//       const result = await collection.insertOne(newData);
+//     res.status(201).json({ message: 'User saved successfully' });
+//   } catch (error) {
+//     console.error('Error saving user:', error);
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// }); 
 
 
 

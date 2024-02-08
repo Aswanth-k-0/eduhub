@@ -31,7 +31,7 @@ const SignupPage = () => {
   email: '',
   state: '',
   district: '',
-  photo: null,
+  photo: '',
   username: '',
   password: '',
   role: '',
