@@ -9,6 +9,11 @@ const userSchema = new mongoose.Schema({
     district: String,
     username: String,
     password: String,
-    id: String,  
+    id: String, 
+    role: String,
+    designation: String,
+    Updates_required: String,
+
   });
+
   export {userSchema};

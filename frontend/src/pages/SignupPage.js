@@ -11,6 +11,8 @@ const SignupPage = () => {
   const options = ['Geci Events', 'Geci Announcements', 'Scholarships', 'Jobs']; // Sample options
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
+
+
     const handleSelectChange = (e) => {
       const value = e.target.value;
       if (value !== '' && !selectedOptions.includes(value)) {
@@ -32,6 +34,9 @@ const SignupPage = () => {
   photo: null,
   username: '',
   password: '',
+  role: '',
+  designation : '',
+  updates_required: '',
 });
 
 const [files, setFiles] = useState(null);
@@ -44,7 +49,7 @@ const handleChange = (e) => {
   if (name === 'photo') {
     setFiles(e.target.files); // Set the files state with the uploaded files
     setFormData({ ...formData, photo: e.target.files[0] }); // Set the photo in formData
-  } else {
+  }else {
     setFormData({ ...formData, [name]: value });
   }
 };
@@ -62,6 +67,7 @@ const handleSubmit = async (e) => {
     for (const key in formData) {
       postData.append(key, formData[key]);
     }
+    postData.set('updates_required', selectedOptions.join(', ')); 
     await axios.post('http://localhost:8888/saveUser', postData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -70,7 +76,7 @@ const handleSubmit = async (e) => {
       
     });
     // Redirect to home page or show success message
-    navigate('/preference', { state: { formData } });
+    navigate('/LoginPage');
   } catch (error) {
     console.error('Error:', error);
     // Handle error (e.g., display error message)
@@ -143,6 +149,7 @@ return (
       <div className="form-group col-md-4">
         <label htmlFor="designation" >Designation</label>
         <select id="designation" name="designation" className="form-control form-control-lg" value={formData.designation} onChange={handleChange} >
+        <option value="">Designation</option>
           <option value="Student">Student</option>
           <option value="Placement officer">Placement officer</option>
           <option value="Worker">Worker</option>
@@ -152,7 +159,7 @@ return (
           
         </div>
         <div className="row" style={{ marginTop: '20px', marginLeft:'40px' }}>
-      <div className="form-group col-md-4">
+      <div className="form-group col-md-4" >
         <label htmlFor="updates">Choose Updates</label>
         <select className="form-control" value={inputValue} onChange={handleSelectChange} style={{ height: '50px',width:'95%' }}>
           <option value="">Choose Updates</option>
@@ -165,7 +172,7 @@ return (
       </div>
     </div>
 
-    <div className="form-group col-md-12" style={{ marginTop: '20px', marginLeft:'50px' }}>
+    <div className="form-group col-md-12" style={{ marginTop: '20px', marginLeft:'50px' }} >
       <label>Selected Options:</label>
       <div style={{ backgroundColor: 'white', width: '90%', height: '300px', borderRadius: '15px', padding: '30px' }}>
         {selectedOptions.map((option) => (

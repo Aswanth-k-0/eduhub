@@ -8,7 +8,7 @@ import readline from 'readline';
 import multer from 'multer'
 import { v4 as uuidv4 } from 'uuid';
 import crypto from 'crypto';
-import {Schema} from './models/schema.js';
+import bcrypt from 'bcrypt';
 import { userSchema } from "./models/userschema.js";
 
 
@@ -41,7 +41,7 @@ app.get('/notifications',(req,res)=>{
 
 
  mongoose.connect('mongodb://127.0.0.1:27017/edu-hub')
-
+ //mongodb://localhost:27017
  .then(()=>{
      console.log("connected to MongoDB");
      // Accessing a specific collection directly
@@ -66,7 +66,7 @@ app.get('/notifications',(req,res)=>{
  });
 
 
-  const User = mongoose.model('User', userSchema);
+  const User = mongoose.model('Users', userSchema);
   const upload = multer({ dest: 'uploads/' });
   
   app.use(express.urlencoded({ extended: true }));
@@ -80,8 +80,8 @@ app.get('/notifications',(req,res)=>{
 
     try {
       // Create a new user instance
-      const db = mongoose.db();
-      const collection = db.collection('mycollection');
+      const db = mongoose.connection.getClient();
+      const collection = db.db().collection('users');
 
       const newData = req.body; // Assuming data is sent in the request body
       const result = await collection.insertOne(newData);
@@ -134,10 +134,33 @@ app.use((err, req, res, next) => {
     }
   });
 
-  app.post('/preference',async (req,res)=>{
-    console.log(req.body);
 
- })
-
+  app.post('/login', async (req, res) => {
+    
+    const { username, password } = req.body;
+    console.log('Username:', username);
+    console.log('Password:', password);
+  
+    try {
+      // Find user by username
+      const user = await User.findOne({ username });
+      if (!user) {
+        // User not found
+        return res.status(401).json({ error: 'Incorrect username or password' });
+      }
+  
+      // Compare passwords
+      //const passwordMatch = await bcrypt.compare(password, user.password);
+      console.log( password);
+      if (password!=user.password) {
+        // Passwords don't match
+        return res.status(401).json({ error: 'Incorrect username or password' });
+      }
+      return res.status(200).json({ message: 'Login successful' });
+    } catch (error) {
+      console.error('Login error:', error);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+  });
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));

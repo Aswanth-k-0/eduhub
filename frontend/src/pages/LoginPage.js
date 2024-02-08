@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import './css/log.css';
 import Header from './Header';
 import Footer from './Footer';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import myimg from "./assets/img/login.png";
 
@@ -13,15 +14,27 @@ const LoginPage = () => {
   // State variables to store username and password
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const [error, setError] = useState(null);
   // Function to handle form submission
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent default form submission
     console.log('Username:', username);
     console.log('Password:', password);
-    // You can add your login logic here (e.g., sending data to a server)
-    navigate('/home');
+    try {
+      // Make a POST request to your backend API endpoint
+      const response = await axios.post('http://localhost:8888/login', {
+        username,
+        password
+      });
+      console.log(response);
+      // If login successful, navigate to the home page
+      navigate('/home');
+    } catch (error) {
+      // If login failed, display an error message
+      setError('Incorrect username or password');
+    }
   };
+    // You can add your login logic here (e.g., sending data to a server)
 
   return (
     <div>
@@ -51,7 +64,7 @@ const LoginPage = () => {
                   name="username"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  // required
+                   required
                 />
                 
               </div>
@@ -68,7 +81,7 @@ const LoginPage = () => {
                   name="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  // required
+                  required
                 />
                 
               </div>
