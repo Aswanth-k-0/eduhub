@@ -8,6 +8,7 @@ import 'font-awesome/css/font-awesome.min.css';
 import './css/home.css';
 
 
+
 const Home = () => {
   // Extract user data from location state
   const location = useLocation();
@@ -15,6 +16,7 @@ const Home = () => {
   // Access the state object and userData if it exists
   const userData = location.state ? location.state.userData : null;
   console.log('hi',userData.user.name);
+  const backendURL = 'http://localhost:8888';
     return (
         <div>
         <header id="header" className="fixed-top">
@@ -57,7 +59,7 @@ const Home = () => {
                 <div className="card-body">
                 {userData && (
                   <div className="d-flex flex-column align-items-center text-center">
-                    <img src={userData.user.photo}  alt="Admin" className="rounded-circle" width="150"/>
+                    <img src="/uploads/OIP (1).jpg"  alt="Admin" className="rounded-circle" width="150"/>
                     <div className="mt-3">
                       <h4>{userData.user.name}</h4>
                       <p className="text-secondary mb-1">{userData.user.designation}</p>
