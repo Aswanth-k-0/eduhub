@@ -9,7 +9,12 @@ import session from 'express-session';
 import MongoDBStore from 'connect-mongodb-session';
 import { userSchema } from "./models/userschema.js";
 import {connectToDatabase} from'./db.js';
-import {retrieveUser} from'./routes/retriveuserdata.js';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
+
+
+
+
 
 connectToDatabase();
 const MongoDBStoreSession = MongoDBStore(session);
