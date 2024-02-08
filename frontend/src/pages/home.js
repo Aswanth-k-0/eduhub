@@ -15,6 +15,7 @@ const Home = () => {
   // Access the state object and userData if it exists
   const userData = location.state ? location.state.userData : null;
   console.log('hi',userData.user.name);
+  const backendURL = 'http://localhost:8888';
     return (
         <div>
         <header id="header" className="fixed-top">

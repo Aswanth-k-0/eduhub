@@ -42,27 +42,26 @@ app.get('/notifications',(req,res)=>{
      res.json(jsonData);
 });
 
-
-
-
   const User = mongoose.model('Users', userSchema);
 
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, '../frontend/src/pages/uploads/'); // Specify the directory where uploaded files should be stored
+      cb(null, '../frontend/public/uploads/'); // Specify the directory where uploaded files should be stored
     },
     filename: function (req, file, cb) {
-      cb(null, file.originalname); // Use the original file name for storing
+      cb(null, file.originalname);
+   // Use the original file name for storing
     }
   });
 
   const upload = multer({ storage: storage });
-
+let filePath=" ";
 app.post('/saveUser', upload.single('photo'), async (req, res) => {
   try {
     const userId = generateUserId(); // Generate user ID
     const { name, mobileNumber, occupation, email, state, district, username, password, role, designation, updates_required } = req.body;
-
+    filePath = `/uploads/${req.file.originalname}`;
+    console.log('file',filePath);
     // Create a new user instance with photo path
     const newUser = new User({
       name,
@@ -70,7 +69,7 @@ app.post('/saveUser', upload.single('photo'), async (req, res) => {
       occupation,
       email,
       state,
-      photo: req.file.path, // Save the file path in the photo field
+      photo: filePath, // Save the file path in the photo field
       district,
       username,
       password,
@@ -136,6 +135,7 @@ app.use((err, req, res, next) => {
             console.error("Error accessing collection:", err);
             return;
         }
+        
         
         // Perform operations on the collection
         // For example, you can query, insert, update, or delete documents
