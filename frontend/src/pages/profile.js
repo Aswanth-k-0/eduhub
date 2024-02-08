@@ -1,18 +1,26 @@
-import React from 'react';
 import './css/header.css';
-//import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import './css/profile.css';
-import { useLocation } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { Link  } from 'react-router-dom';
+import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+const profile = () => {
+  const [user, setUser] = useState(null);
 
+  useEffect(() => {
+    async function fetchUser() {
+      const response = await fetch('/api/profile');
+      const data = await response.json();
+      setUser(data);
+    }
+    fetchUser();
+  }, []);
 
-const Profile=() => {
-  const location = useLocation();
-  const userData = location.state ? location.state.userData : null;
-
-    return (
+  if (!user) {
+    return <div>Loading...</div>;
+  }
+  return (
         <div>
         <header id="header" className="fixed-top">
       <div className="container d-flex align-items-start">
@@ -55,9 +63,9 @@ const Profile=() => {
                   <div className="d-flex flex-column align-items-center text-center">
                     <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" className="rounded-circle" width="150"/>
                     <div className="mt-3">
-                      <h4>{userData.user.name}</h4>
-                      <p className="text-secondary mb-1">{userData.user.designation}</p>
-                      <p className="text-muted font-size-sm">{userData.user.role}</p>
+                      <h4>{user.name}</h4>
+                      <p className="text-secondary mb-1">{user.designation}</p>
+                      <p className="text-muted font-size-sm">{user.role}</p>
                       <div className="row">
                   </div>
                     </div>
@@ -67,7 +75,7 @@ const Profile=() => {
               <div className="card1 mt-3">
                 <h3>Interests</h3>
                 <div className="col-sm-12 position-absolute bottom-0 end-0">
-                {userData.user.interst}
+                {user.interst}
                       <a className="happy1 " target="__blank" href="#">Edit</a>
                 </div> 
               </div>
@@ -135,5 +143,5 @@ const Profile=() => {
     };
 
    
-export default Profile;
+export default profile;
 

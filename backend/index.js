@@ -9,10 +9,7 @@ import session from 'express-session';
 import MongoDBStore from 'connect-mongodb-session';
 import { userSchema } from "./models/userschema.js";
 import {connectToDatabase} from'./db.js';
-import session from 'express-session';
-import MongoStore from 'connect-mongo';
-
-
+import {requireLogin} from './routes/functions.js';
 
 
 
@@ -24,13 +21,6 @@ const store = new MongoDBStoreSession({
   collection: 'sessions',
 });
 
-const requireLogin = (req, res, next) => {
-  if (!req.session.username) {
-    return res.status(401).json({ success: false, message: 'Unauthorized' });
-  }
-
-  next();
-};
 
 function generateUserId() {
     // Generate a UUID
@@ -102,7 +92,7 @@ app.post('/saveUser', upload.single('photo'), async (req, res) => {
       designation,
       updates_required,
     });
-
+    await newUser.save();
     res.status(201).json({ message: 'User saved successfully' });
   } catch (error) {
     console.error('Error saving user:', error);
@@ -112,27 +102,6 @@ app.post('/saveUser', upload.single('photo'), async (req, res) => {
   
   app.use(express.urlencoded({ extended: true }));
   app.use(express.json());
-  // API endpoint to save user data
-//   app.post('/saveUser', upload.single('photo'), async (req, res) => {
-//     console.log(req.body);
-//     const userId = generateUserId();
-//     console.log(userId);
-
-
-//     try {
-//       // Create a new user instance
-//       const db = mongoose.connection.getClient();
-//       const collection = db.db().collection('users');
-
-//       const newData = req.body; // Assuming data is sent in the request body
-//       const result = await collection.insertOne(newData);
-//     res.status(201).json({ message: 'User saved successfully' });
-//   } catch (error) {
-//     console.error('Error saving user:', error);
-//     res.status(500).json({ error: 'Internal server error' });
-//   }
-// }); 
-
 
 
 app.use((err, req, res, next) => {
@@ -186,7 +155,7 @@ app.use((err, req, res, next) => {
       console.log('Password:', password);
   
       const user = await User.findOne({ username });
-  
+      
       if (!user || password !== user.password) {
         return res.status(401).json({ error: 'Incorrect username or password' });
       }
@@ -197,6 +166,32 @@ app.use((err, req, res, next) => {
       return res.status(500).json({ error: 'Internal server error' });
     }
   });
+  function requireLogin1(req, res, next) {
+    if (!req.session.userId) {
+      return res.status(401).json({ success: false, message: 'Unauthorized' });
+    }
+    next();
+  }
   
-
+  app.get('/profile', requireLogin1, async (req, res) => {
+    try {
+      const user = await User.findById(req.session.userId).populate('data').exec();
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+      res.status(200).json(user);
+    } catch (error) {
+      console.error('Error fetching user:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+  async function fetchUser() {
+    const response = await fetch('/api/profile');
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message);
+    }
+    const data = response.json();
+    setUser(data);
+  }
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
