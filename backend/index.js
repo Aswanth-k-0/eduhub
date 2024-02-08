@@ -1,19 +1,31 @@
 import express, { request, response } from "express";
-import { PORT} from "./config.js"; 
+import { PORT,SECRET_KEY} from "./config.js"; 
 import mongoose from "mongoose";
 import cors from "cors";
-//import fs from 'fs';
-import readline from 'readline';
-//import { get } from "http";
 import multer from 'multer'
 import { v4 as uuidv4 } from 'uuid';
 import crypto from 'crypto';
-import bcrypt from 'bcrypt';
+import session from 'express-session';
+import MongoDBStore from 'connect-mongodb-session';
 import { userSchema } from "./models/userschema.js";
 import {connectToDatabase} from'./db.js';
 import {retrieveUser} from'./routes/retriveuserdata.js';
 
 connectToDatabase();
+const MongoDBStoreSession = MongoDBStore(session);
+
+const store = new MongoDBStoreSession({
+  uri: 'mongodb://127.0.0.1:27017/edu-hub', // Replace with your MongoDB connection string
+  collection: 'sessions',
+});
+
+const requireLogin = (req, res, next) => {
+  if (!req.session.username) {
+    return res.status(401).json({ success: false, message: 'Unauthorized' });
+  }
+
+  next();
+};
 
 function generateUserId() {
     // Generate a UUID
@@ -29,7 +41,14 @@ function generateUserId() {
 }
 
  const app = express();
-
+  app.use(
+    session({
+      secret: 'your-secret-key', // Replace with a secret key for session encryption
+      resave: false,
+      saveUninitialized: false,
+      cookie:{secure:false ,maxAge:180* 60 *60},
+      store: store,
+    }) );
  app.use(
      cors()
     );
@@ -55,12 +74,13 @@ app.get('/notifications',(req,res)=>{
   });
 
   const upload = multer({ storage: storage });
-let filePath=" ";
+  let filePath=" ";
 app.post('/saveUser', upload.single('photo'), async (req, res) => {
   try {
-    const userId = generateUserId(); // Generate user ID
+   // const userId = generateUserId();
+    console.log(req.body); // Generate user ID
     const { name, mobileNumber, occupation, email, state, district, username, password, role, designation, updates_required } = req.body;
-    filePath = `/uploads/${req.file.originalname}`;
+    filePath = `/uploads/${req.file}`;
     console.log('file',filePath);
     // Create a new user instance with photo path
     const newUser = new User({
@@ -75,11 +95,8 @@ app.post('/saveUser', upload.single('photo'), async (req, res) => {
       password,
       role,
       designation,
-      updates_required
+      updates_required,
     });
-
-    // Save the user to the database
-    await newUser.save();
 
     res.status(201).json({ message: 'User saved successfully' });
   } catch (error) {
@@ -158,33 +175,23 @@ app.use((err, req, res, next) => {
 
 
   app.post('/login', async (req, res) => {
-    
-    const { username, password } = req.body;
-    console.log('Username:', username);
-    console.log('Password:', password);
-  
     try {
-      // Find user by username
-      const user = await User.findOne({ username });
-      if (!user) {
-        // User not found
-        return res.status(401).json({ error: 'Incorrect username or password' });
-      }
+      const { username, password } = req.body;
+      console.log('Username:', username);
+      console.log('Password:', password);
   
-      // Compare passwords
-      //const passwordMatch = await bcrypt.compare(password, user.password);
-      console.log( password);
-      if (password!=user.password) {
-        // Passwords don't match
+      const user = await User.findOne({ username });
+  
+      if (!user || password !== user.password) {
         return res.status(401).json({ error: 'Incorrect username or password' });
-        console.log("here");
       }
+      req.session.userId = user._id;
       return res.status(200).json({ message: 'Login successful', user });
-
     } catch (error) {
       console.error('Login error:', error);
       return res.status(500).json({ error: 'Internal server error' });
     }
   });
+  
 
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
