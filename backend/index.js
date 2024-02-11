@@ -7,10 +7,11 @@ import { v4 as uuidv4 } from 'uuid';
 import crypto from 'crypto';
 import session from 'express-session';
 import MongoDBStore from 'connect-mongodb-session';
+import cookieParser from 'cookie-parser'
 import { userSchema } from "./models/userschema.js";
 import {connectToDatabase} from'./db.js';
 import {requireLogin} from './routes/functions.js';
-
+import {retrieveData} from './routes/retriveuserdata.js';
 
 
 connectToDatabase();
@@ -21,6 +22,20 @@ const store = new MongoDBStoreSession({
   collection: 'sessions',
 });
 
+const dataSchema = new mongoose.Schema({
+  college: String,
+  title: String,
+  date: String, // Assuming date is stored as a string, modify as needed
+  link: String,
+  gect_document_link: String,
+  geci_date: String,
+  geci_document_link: String,
+  type: String,
+});
+
+const Data = mongoose.model('data', dataSchema);
+
+ 
 
 function generateUserId() {
     // Generate a UUID
@@ -36,12 +51,13 @@ function generateUserId() {
 }
 
  const app = express();
+ app.use(cookieParser());
   app.use(
     session({
       secret: 'your-secret-key', // Replace with a secret key for session encryption
       resave: false,
       saveUninitialized: false,
-      cookie:{secure:false ,maxAge:180* 60 *60},
+      cookie:{secure:true ,maxAge:180* 60 *60},
       store: store,
     }) );
  app.use(
@@ -52,12 +68,19 @@ app.get('/',(request,response)=>{
     console.log(request)
     return response.status(234).send('welcome');
 });
-app.get('/notifications',(req,res)=>{
-     res.json(jsonData);
+app.get('/notifications',async (req,res)=>{
+  try {
+    const data = await retrieveData();
+    console.log(data);
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  } 
 });
 
   const User = mongoose.model('Users', userSchema);
-
+  // const Session = mongoose.model('sessions', sessionSchema);
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, '../frontend/public/uploads/'); // Specify the directory where uploaded files should be stored
@@ -159,26 +182,31 @@ app.use((err, req, res, next) => {
       if (!user || password !== user.password) {
         return res.status(401).json({ error: 'Incorrect username or password' });
       }
-      req.session.userId = user._id;
+      req.session.user = user._id;
+      console.log(req.session.user);
       return res.status(200).json({ message: 'Login successful', user });
     } catch (error) {
       console.error('Login error:', error);
       return res.status(500).json({ error: 'Internal server error' });
     }
   });
+
   function requireLogin1(req, res, next) {
-    if (!req.session.userId) {
+    if (!req.session.user) {
       return res.status(401).json({ success: false, message: 'Unauthorized' });
     }
     next();
   }
   
-  app.get('/profile', requireLogin1, async (req, res) => {
+  app.get('/profile', async (req, res) => {
+    console.log("in profile page")
+    console.log(req.session.user)
+    let check=req.session.user;
     try {
-      const user = await User.findById(req.session.userId).populate('data').exec();
+      // const user =await store.client.collection('sessions').findOne({ 'session.user': check });
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
-      }
+      }  
       res.status(200).json(user);
     } catch (error) {
       console.error('Error fetching user:', error);

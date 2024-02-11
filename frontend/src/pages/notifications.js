@@ -16,7 +16,7 @@ const Notifications=() => {
   
   const fetchNotifications = async () => {
       try {
-          const response = await axios.get('http://localhost:5555/notifications');
+          const response = await axios.get('http://localhost:8888/notifications');
           setData(response.data);
           console.log("hiiiii"+response.data);
       } catch (error) {
@@ -63,24 +63,25 @@ const Notifications=() => {
     <div className="main-body">
     
     <div className="row gutters-sm">
-            <div className="col-md-8">
-              {data.slice(0, showAll ? data.length : 5).map((item) => (
-                <div className="car" key={item.id}>
-                  <div className="car-body"  style={{     height: '30px' }}>
-                    <h5>{item.extracted_title}</h5>
-                    <p>Date: {item.date_day} {item.date_month_year}</p>
-                    <a href={item.document_link} target="_blank" rel="noopener noreferrer">
-                      View Document
-                    </a>
-                  </div>
-                </div>
-              ))}
-              {!showAll && data.length > 5 && (
-                <button className="btn btn-primary" onClick={toggleShowAll}>
-                  Show More
-                </button>
-              )}
-            </div>
+    <div className="col-md-8">
+      {data.slice(0, showAll ? data.length : 5).map((item) => (
+        <div className="car" key={item._id}>
+          <div className="car-body" style={{ height: '30px' }}>
+            <h5>{item.title}</h5>
+            <h5>College:{item.college}</h5>
+            <p>Date: {item.date}</p>
+            <a href={item.gect_document_link || item.geci_document_link} target="_blank" rel="noopener noreferrer">
+              View Document
+            </a>
+          </div>
+        </div>
+      ))}
+      {!showAll && data.length > 5 && (
+        <button className="btn btn-primary" onClick={toggleShowAll}>
+          Show More
+        </button>
+      )}
+    </div>
             
             
             <div className="col-md-4">

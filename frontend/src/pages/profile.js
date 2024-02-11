@@ -5,15 +5,20 @@ import './css/profile.css';
 import { Link  } from 'react-router-dom';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-const profile = () => {
-  const [user, setUser] = useState(null);
+const Profile = () => {
+  const [user, setUser] = useState( );
+  // const location = useLocation();
+
+  // Access the state object and userData if it exists
+  // const userData = location.state ? location.state.userData : null;
 
   useEffect(() => {
     async function fetchUser() {
-      const response = await fetch('/api/profile');
+      const response = await axios.get('http://localhost:8888/profile');
+      console.log(response);
       const data = await response.json();
       setUser(data);
-    }
+    }  
     fetchUser();
   }, []);
 
@@ -143,5 +148,5 @@ const profile = () => {
     };
 
    
-export default profile;
+export default Profile;
 
