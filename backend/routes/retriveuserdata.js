@@ -23,7 +23,7 @@ async function retrieveData() {
 
    
         const documents = await collection.find({}).toArray();
-        console.log("Documents in collection:", documents[0]["id"]);
+        // console.log("Documents in collection:", documents[0]["id"]);
         return documents;
     } catch (error) {
         console.error("Error querying collection:", error);

@@ -10,22 +10,32 @@ import './css/notifications.css';
 const Notifications=() => {
   const [data, setData] = useState([]);
   const [showAll, setShowAll] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const notificationsPerPage = 5;
+
   useEffect(() => {
       fetchNotifications();
-  }, []);
+  }, [currentPage]);
   
   const fetchNotifications = async () => {
       try {
-          const response = await axios.get('http://localhost:8888/notifications');
+          const response = await axios.get(`http://localhost:8888/notifications?page=${currentPage}`);
           setData(response.data);
           console.log("hiiiii"+response.data);
       } catch (error) {
           console.error('Error fetching data:', error);
       }
   };
-  const toggleShowAll = () => {
-    setShowAll(!showAll);
+  const handlePageChange = (newPage) => {
+    console.log('New Page:', newPage);
+    setCurrentPage(newPage);
   };
+  const handleLogout = () => {
+    // Clear user-related data from local storage
+    localStorage.removeItem('token');
+
+  };
+ 
     return (
         <div>
         <header id="header" className="fixed-top">
@@ -49,7 +59,7 @@ const Notifications=() => {
               <a className="nav-link" href="/Notifications">Notifications</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link"><Link to="/LoginPage">Logout</Link></a>
+              <a className="nav-link"><Link to="/LoginPage" onClick={handleLogout}>Logout</Link></a>
             </li>
           </ul>
           <i className="bi bi-list mobile-nav-toggle"></i>
@@ -76,11 +86,18 @@ const Notifications=() => {
           </div>
         </div>
       ))}
-      {!showAll && data.length > 5 && (
-        <button className="btn btn-primary" onClick={toggleShowAll}>
-          Show More
-        </button>
-      )}
+      <button onClick={() => handlePageChange(currentPage - 1)}  disabled={currentPage === 1}
+        style={{ paddingY: '.25rem', paddingX: '.5rem', fontSize: '.75rem' }}
+      >
+        Previous
+      </button>
+      <span>{currentPage}</span>
+      <button
+        onClick={() => handlePageChange(currentPage + 1)} disabled={data.length < notificationsPerPage}
+        style={{ paddingY: '.25rem', paddingX: '.5rem', fontSize: '.75rem' }}
+      >
+        Next
+      </button>
     </div>
             
             
