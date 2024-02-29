@@ -3,6 +3,7 @@ import axios from 'axios';
 import './css/header.css';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { decodeToken } from 'react-jwt';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import './css/home.css';
@@ -10,11 +11,30 @@ import './css/home.css';
 
 const Home = () => {
   // Extract user data from location state
-  const location = useLocation();
+ 
+  const token = localStorage.getItem('token');
+  let user=null;
+  // Decode the token to get user information
+  if (token) {
+    const decodedToken = decodeToken(token);
+    user = decodedToken.userData;
+    // Access individual fields within 'userData'
+    console.log('User Name:', user.name);
+    console.log('User Address:', user.address);
+    console.log('User Designation:', user.designation);
+    if (decodedToken && decodedToken.userData) {
+      // const { userData } = decodedToken.userData;
+      console.log('Authenticated user:', user);
+    } else {
+      // Handle invalid token or missing user data
+      console.error('Invalid token or missing user data');
+    }
+  } else {
+    // Handle the case where there's no token in local storage
+    console.error('No token found in local storage');
+  }
 
-  // Access the state object and userData if it exists
-  const userData = location.state ? location.state.userData : null;
-  console.log('hi',userData.user.name);
+  // console.log('hi',userData.user.name);
   const backendURL = 'http://localhost:8888';
     return (
         <div>
@@ -56,16 +76,17 @@ const Home = () => {
             <div className="col-md-4 mb-3" >
               <div className="card">
                 <div className="card-body">
-                {userData && (
+                {user && (
                   <div className="d-flex flex-column align-items-center text-center">
-                    <img src={userData.user.photo}  alt="Admin" className="rounded-circle" width="150"/>
+                    <img src={user.photo}  alt="Admin" className="rounded-circle" width="150"/>
                     <div className="mt-3">
-                      <h4>{userData.user.name}</h4>
-                      <p className="text-secondary mb-1">{userData.user.designation}</p>
-                      <p className="text-muted font-size-sm">{userData.user.role}</p>
+                      <h4>{user.name}</h4>
+                      <p className="text-secondary mb-1">{user.designation}</p>
+                      <p className="text-muted font-size-sm">{user.role}</p>
                       <div className="row">
                     <div className="col-sm-12">
                       <a className="btn btn-info " target="__blank"><Link to={{pathname:"/profile",state: {userData: {userData} } }}>View Full Profile</Link></a>
+                      <a className="btn btn-info " target="__blank"><Link to={{pathname:"/profile",state: {userData:user} }}>View Full Profile</Link></a>
                     </div>
                   </div>
                   

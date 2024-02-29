@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 import './css/log.css';
 import Header from './Header';
 import Footer from './Footer';
-import axios from 'axios';
+import 'react-toastify/dist/ReactToastify.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import myimg from "./assets/img/login.png";
 
@@ -26,9 +28,39 @@ const LoginPage = () => {
         username,
         password
       });
-      console.log(response);
+      // const data =await response.json()
+      //notifcation setting 
+      // Check if the browser supports the Notification API
+            if ('Notification' in window) {
+              // Request permission for notifications
+              Notification.requestPermission().then((permission) => {
+                if (permission === 'granted') {
+                  // User granted permission
+                  console.log('Notification permission granted!');
+                } else if (permission === 'denied') {
+                  // User denied permission
+                  console.warn('Notification permission denied.');
+                } else {
+                  // Permission has not been requested yet
+                  console.log('Notification permission not yet requested.');
+                }
+              });
+            } else {
+              // Browser does not support the Notification API
+              console.error('Browser does not support notifications.');
+            }
+
+      console.log(response.data.token);
+      if (response.data.token) {
+        const token = response.data.token; // Replace with the actual token value
+        localStorage.setItem('token', token);
+        toast.success('Notification will be displayed');
+        navigate('/home');
+      } else {
+        toast.error('Incorrect Username or Password');
+      }
       // If login successful, navigate to the home page
-      navigate('/home', { state: { userData: response.data  } })
+      // navigate('/home', { state: { userData: response  } })
     } catch (error) {
       // If login failed, display an error message
       setError('Incorrect username or password');

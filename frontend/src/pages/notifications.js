@@ -10,22 +10,32 @@ import './css/notifications.css';
 const Notifications=() => {
   const [data, setData] = useState([]);
   const [showAll, setShowAll] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const notificationsPerPage = 5;
+
   useEffect(() => {
       fetchNotifications();
-  }, []);
+  }, [currentPage]);
   
   const fetchNotifications = async () => {
       try {
-          const response = await axios.get('http://localhost:5555/notifications');
+          const response = await axios.get(`http://localhost:8888/notifications?page=${currentPage}`);
           setData(response.data);
           console.log("hiiiii"+response.data);
       } catch (error) {
           console.error('Error fetching data:', error);
       }
   };
-  const toggleShowAll = () => {
-    setShowAll(!showAll);
+  const handlePageChange = (newPage) => {
+    console.log('New Page:', newPage);
+    setCurrentPage(newPage);
   };
+  const handleLogout = () => {
+    // Clear user-related data from local storage
+    localStorage.removeItem('token');
+
+  };
+ 
     return (
         <div>
         <header id="header" className="fixed-top">
@@ -49,7 +59,7 @@ const Notifications=() => {
               <a className="nav-link" href="/Notifications">Notifications</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link"><Link to="/LoginPage">Logout</Link></a>
+              <a className="nav-link"><Link to="/LoginPage" onClick={handleLogout}>Logout</Link></a>
             </li>
           </ul>
           <i className="bi bi-list mobile-nav-toggle"></i>
@@ -63,24 +73,32 @@ const Notifications=() => {
     <div className="main-body">
     
     <div className="row gutters-sm">
-            <div className="col-md-8">
-              {data.slice(0, showAll ? data.length : 5).map((item) => (
-                <div className="car" key={item.id}>
-                  <div className="car-body"  style={{     height: '30px' }}>
-                    <h5>{item.extracted_title}</h5>
-                    <p>Date: {item.date_day} {item.date_month_year}</p>
-                    <a href={item.document_link} target="_blank" rel="noopener noreferrer">
-                      View Document
-                    </a>
-                  </div>
-                </div>
-              ))}
-              {!showAll && data.length > 5 && (
-                <button className="btn btn-primary" onClick={toggleShowAll}>
-                  Show More
-                </button>
-              )}
-            </div>
+    <div className="col-md-8">
+      {data.slice(0, showAll ? data.length : 5).map((item) => (
+        <div className="car" key={item._id}>
+          <div className="car-body" style={{ height: '30px' }}>
+            <h5>{item.title}</h5>
+            <h5>College:{item.college}</h5>
+            <p>Date: {item.date}</p>
+            <a href={item.gect_document_link || item.geci_document_link} target="_blank" rel="noopener noreferrer">
+              View Document
+            </a>
+          </div>
+        </div>
+      ))}
+      <button onClick={() => handlePageChange(currentPage - 1)}  disabled={currentPage === 1}
+        style={{ paddingY: '.25rem', paddingX: '.5rem', fontSize: '.75rem' }}
+      >
+        Previous
+      </button>
+      <span>{currentPage}</span>
+      <button
+        onClick={() => handlePageChange(currentPage + 1)} disabled={data.length < notificationsPerPage}
+        style={{ paddingY: '.25rem', paddingX: '.5rem', fontSize: '.75rem' }}
+      >
+        Next
+      </button>
+    </div>
             
             
             <div className="col-md-4">
