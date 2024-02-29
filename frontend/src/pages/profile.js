@@ -4,20 +4,15 @@ import 'font-awesome/css/font-awesome.min.css';
 import './css/profile.css';
 import { Link  } from 'react-router-dom';
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
-const profile = () => {
-  const [user, setUser] = useState(null);
+import { useLocation } from 'react-router-dom';
+const Profile = () => {
+  const location = useLocation();
+  const {userData} = location.state ? location.state.userData : null;
+  let data=userData.userData;
+  console.log(data);
+  // You can now use the `userData` in your component
 
-  useEffect(() => {
-    async function fetchUser() {
-      const response = await fetch('/api/profile');
-      const data = await response.json();
-      setUser(data);
-    }
-    fetchUser();
-  }, []);
-
-  if (!user) {
+  if (!userData) {
     return <div>Loading...</div>;
   }
   return (
@@ -63,9 +58,9 @@ const profile = () => {
                   <div className="d-flex flex-column align-items-center text-center">
                     <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" className="rounded-circle" width="150"/>
                     <div className="mt-3">
-                      <h4>{user.name}</h4>
-                      <p className="text-secondary mb-1">{user.designation}</p>
-                      <p className="text-muted font-size-sm">{user.role}</p>
+                      <h4>{userData.user.name}</h4>
+                      <p className="text-secondary mb-1">{userData.user.designation}</p>
+                      <p className="text-muted font-size-sm">{userData.user.role}</p>
                       <div className="row">
                   </div>
                     </div>
@@ -75,7 +70,7 @@ const profile = () => {
               <div className="card1 mt-3">
                 <h3>Interests</h3>
                 <div className="col-sm-12 position-absolute bottom-0 end-0">
-                {user.interst}
+                {userData.user.interst}
                       <a className="happy1 " target="__blank" href="#">Edit</a>
                 </div> 
               </div>
@@ -143,5 +138,5 @@ const profile = () => {
     };
 
    
-export default profile;
+export default Profile;
 
