@@ -149,7 +149,7 @@ const Profile = () => {
                 <h3>Notifications</h3>
                   
                 <div className="col-sm-12 position-absolute bottom-0 end-0">
-                      <a className="happ2 btn btn-info " target="__blank" href="./profile">View All</a>
+                      <a className="happ2 btn btn-info " target="__blank" href="./Notifications">View All</a>
                     </div>
                 </div>
               </div>

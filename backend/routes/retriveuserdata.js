@@ -15,6 +15,7 @@ async function retrieveUser() {
         console.error("Error querying collection:", error);
     }
 }
+
 async function retrieveData() {
     try {
     const db = mongoose.connection.getClient(); // Access the MongoClient instance

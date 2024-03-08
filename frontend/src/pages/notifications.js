@@ -76,7 +76,7 @@ const Notifications=() => {
     <div className="col-md-8">
       {data.slice(0, showAll ? data.length : 5).map((item) => (
         <div className="car" key={item._id}>
-          <div className="car-body" style={{ height: '30px' }}>
+          <div className="car-body" style={{ height: '30px', overflowY:'auto' }}>
             <h5>{item.title}</h5>
             <h5>College:{item.college}</h5>
             <p>Date: {item.date}</p>

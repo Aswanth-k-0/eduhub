@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import axios from 'axios';
 import './css/log.css';
 import Header from './Header';
@@ -16,7 +15,6 @@ const LoginPage = () => {
   // State variables to store username and password
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
   // Function to handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent default form submission
@@ -28,42 +26,21 @@ const LoginPage = () => {
         username,
         password
       });
-      // const data =await response.json()
-      //notifcation setting 
-      // Check if the browser supports the Notification API
-            if ('Notification' in window) {
-              // Request permission for notifications
-              Notification.requestPermission().then((permission) => {
-                if (permission === 'granted') {
-                  // User granted permission
-                  console.log('Notification permission granted!');
-                } else if (permission === 'denied') {
-                  // User denied permission
-                  console.warn('Notification permission denied.');
-                } else {
-                  // Permission has not been requested yet
-                  console.log('Notification permission not yet requested.');
-                }
-              });
-            } else {
-              // Browser does not support the Notification API
-              console.error('Browser does not support notifications.');
-            }
 
       console.log(response.data.token);
       if (response.data.token) {
         const token = response.data.token; // Replace with the actual token value
         localStorage.setItem('token', token);
-        toast.success('Notification will be displayed');
+        alert('Login successful');
         navigate('/home');
       } else {
-        toast.error('Incorrect Username or Password');
+        alert('Incorrect Username or Password');
       }
-      // If login successful, navigate to the home page
-      // navigate('/home', { state: { userData: response  } })
     } catch (error) {
-      // If login failed, display an error message
-      setError('Incorrect username or password');
+      // If an error occurs, display an alert
+      alert('Incorrect Username or Password');
+      setUsername('');
+      setPassword('');
     }
   };
     // You can add your login logic here (e.g., sending data to a server)

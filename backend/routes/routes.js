@@ -80,11 +80,12 @@ router.get('/profile',verifyToken ,async (req, res) => {
     const user = req.user; 
     res.status(200).json({ status: 'success', message: 'Authentication successful', user });
   });
+  
   router.get('/notifications', async (req, res) => {
     try {
       const page = parseInt(req.query.page) || 1; // Get page number from the query parameter, default to 1
       const limit = 5; // Get limit from the query parameter, default to 5
-  
+      
       const startIndex = (page - 1) * limit;
       const endIndex = page * limit;
   
@@ -97,6 +98,7 @@ router.get('/profile',verifyToken ,async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
+
 router.post('/saveUser', upload.single('photo'), async (req, res) => {
     try {
      // const userId = generateUserId();
