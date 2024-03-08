@@ -86,15 +86,16 @@ const Notifications=() => {
           </div>
         </div>
       ))}
+      <br/>
       <button onClick={() => handlePageChange(currentPage - 1)}  disabled={currentPage === 1}
-        style={{ paddingY: '.25rem', paddingX: '.5rem', fontSize: '.75rem' }}
+        style={{ paddingY: '.25rem', paddingX: '.5rem', fontSize: '.75rem', marginRight:'10px' }}
       >
         Previous
       </button>
       <span>{currentPage}</span>
       <button
         onClick={() => handlePageChange(currentPage + 1)} disabled={data.length < notificationsPerPage}
-        style={{ paddingY: '.25rem', paddingX: '.5rem', fontSize: '.75rem' }}
+        style={{ paddingY: '.25rem', paddingX: '.5rem', fontSize: '.75rem', marginLeft:'10px' }}
       >
         Next
       </button>

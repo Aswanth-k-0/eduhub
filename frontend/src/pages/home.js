@@ -87,8 +87,7 @@ const Home = () => {
                     <div className="col-sm-12">
                       <a className="btn btn-info " target="__blank"><Link to={{pathname:"/profile",state: {userData:user} }}>View Full Profile</Link></a>
                     </div>
-                  </div>
-                  
+                  </div> 
                     </div>
                   </div>
                   )}
