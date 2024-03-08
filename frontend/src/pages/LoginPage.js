@@ -8,6 +8,8 @@ import Footer from './Footer';
 import 'react-toastify/dist/ReactToastify.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import myimg from "./assets/img/login.png";
+import mimg from "./uploads/Amazing-Profile-Picture.jpg";
+
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -55,7 +57,7 @@ const LoginPage = () => {
       <div className="container-fluid h-custom">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-md-9 col-lg-6 col-xl-5">
-            <img src={myimg} className="img-fluid" alt="Sample image" />
+            <img src={myimg} className="img-fluid" alt={mimg} />
           </div>
 
           <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">

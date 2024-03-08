@@ -80,9 +80,21 @@ router.get('/profile',verifyToken ,async (req, res) => {
     const user = req.user; 
     res.status(200).json({ status: 'success', message: 'Authentication successful', user });
   });
-  
-  router.get('/notifications', async (req, res) => {
-    try {
+router.get('/notifications', async (req, res) => {
+  // console.log('Cookies:', req.headers);
+  const bearerToken = req.headers.authorization;
+
+  if (!bearerToken) {
+    return res.status(401).json({ error: 'Unauthorized: No token provided' });
+  }
+
+  // Extract the token without the "Bearer " prefix
+  const token = bearerToken.split(' ')[1];
+
+  try {
+      const decoded = jwt.verify(token,SECRET_KEY);
+      console.log("data=",decoded);
+      // const designation = decoded.userData.designation;
       const page = parseInt(req.query.page) || 1; // Get page number from the query parameter, default to 1
       const limit = 5; // Get limit from the query parameter, default to 5
       

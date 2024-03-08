@@ -9,6 +9,8 @@ import './css/notifications.css';
 
 const Notifications=() => {
   const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const [showAll, setShowAll] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const notificationsPerPage = 5;
@@ -18,8 +20,14 @@ const Notifications=() => {
   }, [currentPage]);
   
   const fetchNotifications = async () => {
+     const token = localStorage.getItem('token');
+     console.log("aksjdh="+token);
       try {
-          const response = await axios.get(`http://localhost:8888/notifications?page=${currentPage}`);
+          const response = await axios.get(`http://localhost:8888/notifications?page=${currentPage}`,{
+            headers: {
+              Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+            },
+            });
           setData(response.data);
           console.log("hiiiii"+response.data);
       } catch (error) {
@@ -109,6 +117,8 @@ const Notifications=() => {
                 id="searchInput1"
                 placeholder="Search..."
                 className="form-control form-control-sm"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
             />
             <i
                 className="fa fa-search"
