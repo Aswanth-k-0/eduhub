@@ -102,7 +102,7 @@ const Profile = () => {
                 <h3>Interests</h3>
                 {user && (
                 <div className="col-sm-12 position-absolute bottom-0 end-0">
-                 {user.intrest}
+                 {user.updates_required}
                       <a className="happy1 " target="__blank" href="#">Edit</a>
                 </div> 
                 )}
@@ -142,11 +142,11 @@ const Profile = () => {
                 {user && (
                <div className='basic' >
               <br />
-                Phno: {user.mobileNumber}<br />
-                Occupation: {user.occupation}<br />
-                Email: {user.email}<br />
-                State:{user.state}<br />
-                District: {user.district}<br />
+                Phno: {user.mobileNumber}<br /><br />
+                Occupation: {user.occupation}<br /><br />
+                Email: {user.email}<br /><br />
+                State:{user.state}<br /><br />
+                District: {user.district}<br /><br />
                
                 </div>
                 )}

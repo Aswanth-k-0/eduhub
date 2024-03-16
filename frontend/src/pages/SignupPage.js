@@ -84,6 +84,31 @@ const handleSubmit = async (e) => {
   }
 };
 
+const handleClear = () => {
+  setSelectedOptions([]);
+  setInputValue('');
+  setFiles('');
+  setFormData({
+    name: '',
+    mobileNumber: '',
+    occupation: '',
+    email: '',
+    state: '',
+    district: '',
+    photo: '',
+    username: '',
+    password: '',
+    repassword: '',
+    role: '',
+    designation: '',
+    updates_required: '',
+  });
+  const fileInput = document.getElementById('photo');
+  if (fileInput) {
+    fileInput.value = ''; // Clearing the file input value
+  }
+};
+
 return (
 
     <div style={{overflowX:'hidden'}}>
@@ -216,7 +241,7 @@ return (
         <br/>
         <center>
           <button type="submit" style={{ width: '200px' }} className="btn btn-primary" onClick={handleSubmit}>Save and continue</button>
-          <button type="clear" style={{ width: '200px', marginLeft: '10px' }} className="btn btn-primary">Clear</button>
+          <button type="button" style={{ width: '200px', marginLeft: '10px' }} className="btn btn-primary" onClick={handleClear}>Clear</button>
         </center>
       </form>
     </div>
