@@ -116,8 +116,9 @@ router.post('/saveUser', upload.single('photo'), async (req, res) => {
      // const userId = generateUserId();
       console.log(req.body); // Generate user ID
       const { name, mobileNumber, occupation, email, state, district, username, password, role, designation, updates_required } = req.body;
-      filePath = `/uploads/${req.file}`;
+      filePath = `/uploads/${req.file.filename}`;
       console.log('file',filePath);
+      console.log(updates_required);
       // Create a new user instance with photo path
       const newUser = new User({
         name,
@@ -131,8 +132,9 @@ router.post('/saveUser', upload.single('photo'), async (req, res) => {
         password,
         role,
         designation,
-        updates_required,
+        updates_required:updates_required,
       });
+      console.log("asd",newUser.username)
       await newUser.save();
       res.status(201).json({ message: 'User saved successfully' });
     } catch (error) {

@@ -67,15 +67,16 @@ const handleSubmit = async (e) => {
     for (const key in formData) {
       postData.append(key, formData[key]);
     }
+    console.log(postData);
+
     postData.set('updates_required', selectedOptions.join(', ')); 
     await axios.post('http://localhost:8888/saveUser', postData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
-       
+        'Content-Type': 'multipart/form-data', 
       },
       
     });
-    // Redirect to home page or show success message
+
     navigate('/LoginPage');
   } catch (error) {
     console.error('Error:', error);
@@ -174,7 +175,7 @@ return (
 
     <div className="form-group col-md-12" style={{ marginTop: '20px', marginLeft:'50px' }} >
       <label>Selected Options:</label>
-      <div style={{ backgroundColor: 'white', width: '90%', height: '300px', borderRadius: '15px', padding: '30px' }}>
+      <div style={{ backgroundColor: 'white', width: '90%', height: '300px', borderRadius: '15px', padding: '30px' }} >
         {selectedOptions.map((option) => (
           <span key={option} style={{ paddingRight: '50px' }}>
             {option}
