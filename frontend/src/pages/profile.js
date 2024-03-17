@@ -101,11 +101,18 @@ const Profile = () => {
               <div className="card1 mt-3">
                 <h3>Interests</h3>
                 {user && (
+               <div className='basic' >
+              <br />
+              {user.updates_required && user.updates_required.split(',').map((item, index) => (
+        <div key={index}>{item.trim()} <br /> <br /></div>
+      ))}
+               
+                </div>
+                )}
                 <div className="col-sm-12 position-absolute bottom-0 end-0">
-                 {user.updates_required}
+                
                       <a className="happy1 " target="__blank" href="#">Edit</a>
                 </div> 
-                )}
               </div>
               <div className="card1 mt-3">
                 <h3>Set Alert</h3>
