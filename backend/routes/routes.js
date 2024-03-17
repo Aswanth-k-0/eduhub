@@ -7,6 +7,7 @@ import { SECRET_KEY } from '../config.js';
 import {verifyToken,storage} from './functions.js';
 import { userSchema } from "../models/userschema.js";
 import { retrieveData } from './retriveuserdata.js';
+import { all } from 'axios';
 
 const router = express.Router();
 const encoder =bodyParser.urlencoded({extended:true});
@@ -67,7 +68,7 @@ router.post('/saveData', async (req, res) => {
       const token=jwt.sign({
           userData:user
       },SECRET_KEY)
-      console.log(token);
+ 
       return res.status(200).json({ message: 'Login successful', token });
     } catch (error) {
       console.error('Login error:', error);
@@ -95,16 +96,27 @@ router.get('/notifications', async (req, res) => {
       const decoded = jwt.verify(token,SECRET_KEY);
       console.log("data=",decoded);
       // const designation = decoded.userData.designation;
-      const page = parseInt(req.query.page) || 1; // Get page number from the query parameter, default to 1
-      const limit = 5; // Get limit from the query parameter, default to 5
-      
-      const startIndex = (page - 1) * limit;
-      const endIndex = page * limit;
-  
-      const allNotifications = await retrieveData(); // Retrieve all notifications (modify as per your actual retrieval logic)
-      const paginatedNotifications = allNotifications.slice(startIndex, endIndex);
-  
-      res.json(paginatedNotifications);
+      if(req.query.page){
+        const page = parseInt(req.query.page) || 1; // Get page number from the query parameter, default to 1
+        const limit = 5; // Get limit from the query parameter, default to 5
+        
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+    
+        const allNotifications = await retrieveData(); // Retrieve all notifications (modify as per your actual retrieval logic)
+        const paginatedNotifications = allNotifications.slice(startIndex, endIndex);
+    
+        res.json(paginatedNotifications);
+      }else{
+        const decoded = jwt.verify(token,SECRET_KEY);
+        console.log("data=",decoded);
+        let str=decoded.userData.updates_required;
+        const interests = str.split(","); 
+        console.log(interests)
+        const allNotifications = await retrieveData(interests);
+        // console.log(allNotifications);
+        res.json(allNotifications)
+      }
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });

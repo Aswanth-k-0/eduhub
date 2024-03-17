@@ -7,7 +7,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 const Profile = () => {
   const [user, setUserData] = useState(null);
-
+  const [data,setData]=useState(null);
   
   useEffect(() => {
     const fetchProfile = async () => {
@@ -36,10 +36,28 @@ const Profile = () => {
         console.error('Error fetching profile:', error.message);
       }
     };
-
+    
     fetchProfile();
   }, []);
-
+  
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      const token = localStorage.getItem('token');
+       try {
+           const response = await axios.get(`http://localhost:8888/notifications`,{
+             headers: {
+               Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+             },
+             });
+           setData(response.data);
+           console.log("hiiiii"+response.data);
+       } catch (error) {
+           console.error('Error fetching data:', error);
+       }
+   };
+    
+    fetchNotifications();
+  }, []);
   const handleLogout = () => {
     // Clear user-related data from local storage
     localStorage.removeItem('token');

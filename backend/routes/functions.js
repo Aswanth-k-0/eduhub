@@ -20,7 +20,7 @@ import { SECRET_KEY } from '../config.js';
 
 const verifyToken = (req, res, next) => {
   const token = req.headers.authorization;
-  console.log("token="+token);
+  // console.log("token="+token);
   if (!token) {
     return res.status(401).json({ status: 'error', message: 'Unauthorized: No token provided' });
   }
