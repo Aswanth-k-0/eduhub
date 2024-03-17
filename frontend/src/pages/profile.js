@@ -119,11 +119,18 @@ const Profile = () => {
               <div className="card1 mt-3">
                 <h3>Interests</h3>
                 {user && (
+               <div className='basic' >
+              <br />
+              {user.updates_required && user.updates_required.split(',').map((item, index) => (
+        <div key={index}>{item.trim()} <br /> <br /></div>
+      ))}
+               
+                </div>
+                )}
                 <div className="col-sm-12 position-absolute bottom-0 end-0">
-                 {user.intrest}
+                
                       <a className="happy1 " target="__blank" href="#">Edit</a>
                 </div> 
-                )}
               </div>
               <div className="card1 mt-3">
                 <h3>Set Alert</h3>
@@ -160,11 +167,11 @@ const Profile = () => {
                 {user && (
                <div className='basic' >
               <br />
-                Phno: {user.mobileNumber}<br />
-                Occupation: {user.occupation}<br />
-                Email: {user.email}<br />
-                State:{user.state}<br />
-                District: {user.district}<br />
+                Phno: {user.mobileNumber}<br /><br />
+                Occupation: {user.occupation}<br /><br />
+                Email: {user.email}<br /><br />
+                State:{user.state}<br /><br />
+                District: {user.district}<br /><br />
                
                 </div>
                 )}

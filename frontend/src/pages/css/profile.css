@@ -77,7 +77,7 @@ body{
     color: #2b00ff;
 }
 .happ:hover{
-    color: #215cbc;
+   
 }
 
 .happy1{
@@ -86,7 +86,7 @@ body{
     transition: all ease-in-out 0.4s;
     font-size: large;
     font-weight: 700;
-    color: #2b00ff;
+    color: #421ec5;
 }
 
 .happ2{
@@ -94,7 +94,7 @@ body{
     margin-bottom: 10px;
 }
 .happy1:hover{
-    color: #215cbc;
+    color: #08aee5;
 }
 
 @keyframes fadeInUp {
@@ -131,13 +131,11 @@ body{
 }
 
  .card:hover{
-    color: #47b2e4;
     transform: translateY(-10px);
     transition: all ease-in-out 0.4s;
   }
 
   .card1:hover{
-    color: #47b2e4;
     transform: translateY(-10px);
     transition: all ease-in-out 0.4s;
   }

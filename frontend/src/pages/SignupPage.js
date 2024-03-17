@@ -67,19 +67,45 @@ const handleSubmit = async (e) => {
     for (const key in formData) {
       postData.append(key, formData[key]);
     }
+    console.log(postData);
+
     postData.set('updates_required', selectedOptions.join(', ')); 
     await axios.post('http://localhost:8888/saveUser', postData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
-       
+        'Content-Type': 'multipart/form-data', 
       },
       
     });
-    // Redirect to home page or show success message
+
     navigate('/LoginPage');
   } catch (error) {
     console.error('Error:', error);
     // Handle error (e.g., display error message)
+  }
+};
+
+const handleClear = () => {
+  setSelectedOptions([]);
+  setInputValue('');
+  setFiles('');
+  setFormData({
+    name: '',
+    mobileNumber: '',
+    occupation: '',
+    email: '',
+    state: '',
+    district: '',
+    photo: '',
+    username: '',
+    password: '',
+    repassword: '',
+    role: '',
+    designation: '',
+    updates_required: '',
+  });
+  const fileInput = document.getElementById('photo');
+  if (fileInput) {
+    fileInput.value = ''; // Clearing the file input value
   }
 };
 
@@ -174,7 +200,7 @@ return (
 
     <div className="form-group col-md-12" style={{ marginTop: '20px', marginLeft:'50px' }} >
       <label>Selected Options:</label>
-      <div style={{ backgroundColor: 'white', width: '90%', height: '300px', borderRadius: '15px', padding: '30px' }}>
+      <div style={{ backgroundColor: 'white', width: '90%', height: '300px', borderRadius: '15px', padding: '30px' }} >
         {selectedOptions.map((option) => (
           <span key={option} style={{ paddingRight: '50px' }}>
             {option}
@@ -215,7 +241,7 @@ return (
         <br/>
         <center>
           <button type="submit" style={{ width: '200px' }} className="btn btn-primary" onClick={handleSubmit}>Save and continue</button>
-          <button type="clear" style={{ width: '200px', marginLeft: '10px' }} className="btn btn-primary">Clear</button>
+          <button type="button" style={{ width: '200px', marginLeft: '10px' }} className="btn btn-primary" onClick={handleClear}>Clear</button>
         </center>
       </form>
     </div>
