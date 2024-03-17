@@ -1,13 +1,28 @@
 
 import './css/header.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import axios from 'axios';
 import './css/preference.css';
 
 const SignupPage = () => {
+  const token = localStorage.getItem('token');
+  console.log(token);
+  const location = useLocation();
+  console.log(location);
+  const userData = location.state ? location.state.userData : null;
+  console.log("user",userData);
+  // Use userData to populate the form fields
+  useEffect(() => {
+    if (userData) {
+      setFormData(userData);
+      setSelectedOptions(userData.updates_required.split(',').map(item => item.trim()));
+    }
+  }, [userData]);
+
   const options = ['Geci Events', 'Geci Announcements', 'Scholarships', 'Jobs']; // Sample options
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
@@ -121,7 +136,7 @@ return (
     <nav id="navbar" className="navbar ">
       <ul>
         <li className="nav-item">
-          <a className="nav-link" href="/LoginPage">Back</a>
+          <a className="nav-link" onClick={() => window.history.back()} href="#">Back</a>
         </li>
       </ul>
       <i className="bi bi-list mobile-nav-toggle"></i>

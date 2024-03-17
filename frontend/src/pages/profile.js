@@ -10,6 +10,7 @@ const Profile = () => {
 
   
   useEffect(() => {
+    
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -17,7 +18,9 @@ const Profile = () => {
         const response = await axios.get('http://localhost:8888/profile', {
           headers: { Authorization:token},
         });
-        console.log(response.data.user.userData);   
+        console.log(response.data.user.userData); 
+        const userData = response.data.user.userData;
+        console.log('userData:', userData);  
         let status = response.status;
         console.log('response:'+response.status)
 
@@ -111,7 +114,7 @@ const Profile = () => {
                 )}
                 <div className="col-sm-12 position-absolute bottom-0 end-0">
                 
-                      <a className="happy1 " target="__blank" href="#">Edit</a>
+                      <a className="happy1 " href={'/Signup'} target="__blank" >Edit</a>
                 </div> 
               </div>
               <div className="card1 mt-3">
@@ -157,10 +160,12 @@ const Profile = () => {
                
                 </div>
                 )}
+                {user && (
                 <div className="col-sm-12 position-absolute bottom-0 end-0">
-                      <a className="happ" target="__blank" href="#">Edit</a>
+                      <a className="happ"><Link to={{ pathname: "/Signup", state: { userData: user } }}>Edit</Link></a>
+                      
                 </div> 
-
+                 )}
                 </div>
               </div>
               
