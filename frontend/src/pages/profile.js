@@ -7,7 +7,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 const Profile = () => {
   const [user, setUserData] = useState(null);
-
+  const [notifications, setNotifications] = useState([]);
   
   useEffect(() => {
     
@@ -39,10 +39,28 @@ const Profile = () => {
         console.error('Error fetching profile:', error.message);
       }
     };
-
+    
     fetchProfile();
   }, []);
-
+  
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      const token = localStorage.getItem('token');
+       try {
+           const response = await axios.get(`http://localhost:8888/notifications`,{
+             headers: {
+               Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+             },
+             });
+           setNotifications(response.data);
+           console.log("hiiiii"+response.data);
+       } catch (error) {
+           console.error('Error fetching data:', error);
+       }
+   };
+    
+    fetchNotifications();
+  }, []);
   const handleLogout = () => {
     // Clear user-related data from local storage
     localStorage.removeItem('token');
@@ -172,7 +190,11 @@ const Profile = () => {
               <div className="card mb-3">
                 <div className="card-body1">
                 <h3>Notifications</h3>
-                  
+                <ul>
+                    {notifications.map((notification, index) => (
+                      <li key={index}>{notification.title}</li>
+                    ))}
+                  </ul>
                 <div className="col-sm-12 position-absolute bottom-0 end-0">
                       <a className="happ2 btn btn-info " target="__blank" href="./Notifications">View All</a>
                     </div>
