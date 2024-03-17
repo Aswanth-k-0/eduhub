@@ -21,7 +21,6 @@ const Notifications=() => {
   
   const fetchNotifications = async () => {
      const token = localStorage.getItem('token');
-     console.log("aksjdh="+token);
       try {
           const response = await axios.get(`http://localhost:8888/notifications?page=${currentPage}`,{
             headers: {

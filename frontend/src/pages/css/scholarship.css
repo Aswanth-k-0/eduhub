@@ -152,18 +152,18 @@ body{
 }
 
  .card:hover{
-    color: #47b2e4;
+    
     transform: translateY(-10px);
     transition: all ease-in-out 0.4s;
   }
 
   .card1:hover{
-    color: #47b2e4;
+    
     transform: translateY(-10px);
     transition: all ease-in-out 0.4s;
   }
   .card2:hover{
-    color: #47b2e4;
+  
     transform: translateY(-10px);
     transition: all ease-in-out 0.4s;
   }
