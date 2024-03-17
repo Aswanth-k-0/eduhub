@@ -7,7 +7,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 const Profile = () => {
   const [user, setUserData] = useState(null);
-  const [data,setData]=useState(null);
+  const [notifications, setNotifications] = useState([]);
   
   useEffect(() => {
     const fetchProfile = async () => {
@@ -49,7 +49,7 @@ const Profile = () => {
                Authorization: `Bearer ${token}`, // Add the token to the Authorization header
              },
              });
-           setData(response.data);
+           setNotifications(response.data);
            console.log("hiiiii"+response.data);
        } catch (error) {
            console.error('Error fetching data:', error);
@@ -185,7 +185,11 @@ const Profile = () => {
               <div className="card mb-3">
                 <div className="card-body1">
                 <h3>Notifications</h3>
-                  
+                <ul>
+                    {notifications.map((notification, index) => (
+                      <li key={index}>{notification.title}</li>
+                    ))}
+                  </ul>
                 <div className="col-sm-12 position-absolute bottom-0 end-0">
                       <a className="happ2 btn btn-info " target="__blank" href="./Notifications">View All</a>
                     </div>
