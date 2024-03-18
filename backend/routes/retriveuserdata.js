@@ -40,4 +40,4 @@ async function retrievelist() {
         console.error("Error querying collection:", error);
     }
 }
-export {retrieveUser,retrieveData};
+export {retrieveUser,retrieveData,retrievelist};
