@@ -109,10 +109,10 @@ router.get('/notifications', async (req, res) => {
         res.json(paginatedNotifications);
       }else{
         const decoded = jwt.verify(token,SECRET_KEY);
-        console.log("data=",decoded);
+        // console.log("data=",decoded);
         let str=decoded.userData.updates_required;
         const interests = str.split(","); 
-        console.log(interests)
+        // console.log(interests)
         const allNotifications = await retrieveData(interests);
         // console.log(allNotifications);
         res.json(allNotifications)
@@ -122,7 +122,15 @@ router.get('/notifications', async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
-
+  router.get('/verify',(req,res)=>{
+      const token = req.headers.authorization;
+    
+      if (!token) {
+         res.status(401).json({ message: 'Unauthorized: No token provided' });
+      }else{
+         res.status(200).json({message:"user verifie"})
+      }
+  })
 router.post('/saveUser', upload.single('photo'), async (req, res) => {
     try {
      // const userId = generateUserId();
