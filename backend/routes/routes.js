@@ -94,7 +94,7 @@ router.get('/notifications', async (req, res) => {
 
   try {
       const decoded = jwt.verify(token,SECRET_KEY);
-      console.log("data=",decoded);
+      // console.log("data=",decoded);
       // const designation = decoded.userData.designation;
       if(req.query.page){
         const page = parseInt(req.query.page) || 1; // Get page number from the query parameter, default to 1
@@ -102,8 +102,9 @@ router.get('/notifications', async (req, res) => {
         
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
-    
-        const allNotifications = await retrieveData(); // Retrieve all notifications (modify as per your actual retrieval logic)
+        let str=decoded.userData.updates_required;
+        const interests = str.split(","); 
+        const allNotifications = await retrieveData(interests); // Retrieve all notifications (modify as per your actual retrieval logic)
         const paginatedNotifications = allNotifications.slice(startIndex, endIndex);
     
         res.json(paginatedNotifications);
