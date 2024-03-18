@@ -33,15 +33,17 @@ const Home = () => {
     // Handle the case where there's no token in local storage
     console.error('No token found in local storage');
   }
+  const handleLogout = () => {
+    // Clear user-related data from local storage
+    localStorage.removeItem('token');
 
+  };
   // console.log('hi',userData.user.name);
   const backendURL = 'http://localhost:8888';
     return (
         <div>
         <header id="header" className="fixed-top">
       <div className="container d-flex align-items-start">
-        <a href="#" className="logo"><img src="/assets/img/logo.png" alt="" className="img-fluid" /></a>
-
         <h1 className="logoText"><a href="#">Edu-hub</a></h1>
         
         <nav id="navbar" className="navbar ">
@@ -50,16 +52,17 @@ const Home = () => {
               <a className="nav-link" ><Link to="/Home">Home</Link></a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/Scholarship">Scholarships</a>
+            <a className="nav-link" > <Link to={{pathname:"/Scholarship",state: {userData:user} }}>Scholarships</Link></a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/Jobs">Jobs</a>
+            <a className="nav-link" > <Link to={{pathname:"/Jobs",state: {userData:user} }}>Jobs</Link></a>
+              
             </li>
             <li className="nav-item">
               <a className="nav-link" href="/Notifications">Notifications</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#" data-target="#myModal" data-toggle="modal"><Link to="/LoginPage">Logout</Link></a>
+            <Link to="/LoginPage" onClick={handleLogout}>Logout</Link>
             </li>
           </ul>
           <i className="bi bi-list mobile-nav-toggle"></i>

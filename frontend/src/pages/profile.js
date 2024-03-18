@@ -70,8 +70,7 @@ const Profile = () => {
         <div>
         <header id="header" className="fixed-top">
       <div className="container d-flex align-items-start">
-        <a href="#" className="logo"><img src="/assets/img/logo.png" alt="" className="img-fluid" /></a>
-
+        
         <h1 className="logoText"><a href="#">Edu-hub</a></h1>
         
         <nav id="navbar" className="navbar ">
@@ -80,7 +79,7 @@ const Profile = () => {
               <a className="nav-link" ><Link to="/Home">Home</Link></a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/Scholarship">Scholarships</a>
+            <a className="nav-link" href="/Scholarship">Scholarships</a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="/Jobs">Jobs</a>
@@ -136,32 +135,12 @@ const Profile = () => {
                 </div> 
               </div>
               <div className="card1 mt-3">
-                <h3>Set Alert</h3>
+                <h3 style={{fontWeight:'550'}}>Set Alert</h3>
               </div>
             </div>
             
             <div className="col-md-8">
-            <div style={{ position: 'relative', width: '500px', margin: '10px 0' }}>
-            <input
-                type="text"
-                id="searchInput"
-                placeholder="Search..."
-                className="form-control form-control-sm"
-            />
-            <i
-                className="fa fa-search"
-                id="icon"
-                style={{
-                    position: 'absolute',
-                    top: '50%',
-                    right: '-320px',
-                    marginLeft: '500px',
-                    transform: 'translateY(-50%)',
-                    cursor: 'pointer',
-                  }}
-            ></i>
-            </div>
-            <br></br>
+            
 
 
               <div className="card mb-3">
@@ -180,16 +159,17 @@ const Profile = () => {
                 )}
                 {user && (
                 <div className="happ col-sm-12 position-absolute bottom-0 end-0">
-                      <a className="happ"><Link to={{ pathname: "/Signup", state: { userData: user } }}>Edit</Link></a>
+                      <a className="happ"><Link to={{pathname:"/Edit",state: {userData:user} }}>Edit</Link></a>
                       
                 </div> 
                  )}
                 </div>
               </div>
+              <br />
               
               <div className="card mb-3">
                 <div className="card-body1">
-                <h3>Notifications</h3>
+                <h3 style={{fontWeight:'550'}}>Notifications</h3>
                 <ul>
                     {notifications.map((notification, index) => (
                       <li key={index}>{notification.title}</li>
