@@ -10,7 +10,7 @@ import './css/preference.css';
 
 const SignupPage = () => {
 
-  const options = ['Geci Events', 'Geci Announcements', 'Scholarships', 'Jobs']; // Sample options
+  const options = ['Geci Events', 'Geci Announcements', 'Scholarships', 'Jobs', 'Cet Event', 'Gect Announcemeents', 'Nitc Event']; // Sample options
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
 

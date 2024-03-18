@@ -81,7 +81,7 @@ router.get('/profile',verifyToken ,async (req, res) => {
     const user = req.user; 
     res.status(200).json({ status: 'success', message: 'Authentication successful', user });
   });
-router.get('/notifications',verifyToken, async (req, res) => {
+router.get('/notifications', async (req, res) => {
   // console.log('Cookies:', req.headers);
   const bearerToken = req.headers.authorization;
 
@@ -104,7 +104,8 @@ router.get('/notifications',verifyToken, async (req, res) => {
         const endIndex = page * limit;
         let str=decoded.userData.updates_required;
         const interests = str.split(","); 
-        const allNotifications = await retrieveData(interests); // Retrieve all notifications (modify as per your actual retrieval logic)
+        const allNotifications = await retrieveData(interests);
+        console.log (allNotifications) // Retrieve all notifications (modify as per your actual retrieval logic)
         const paginatedNotifications = allNotifications.slice(startIndex, endIndex);
     
         res.json(paginatedNotifications);

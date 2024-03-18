@@ -22,7 +22,7 @@ const Edit = () => {
     // Handle the case where there's no token in local storage
     console.error('No token found in local storage');
   }
-
+  
   const options = ['Geci Events', 'Geci Announcements', 'Scholarships', 'Jobs']; // Sample options
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
