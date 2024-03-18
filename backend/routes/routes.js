@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import { SECRET_KEY } from '../config.js';
 import {verifyToken,storage} from './functions.js';
 import { userSchema } from "../models/userschema.js";
-import { retrieveData } from './retriveuserdata.js';
+import { retrieveData,retrievelist } from './retriveuserdata.js';
 import { all } from 'axios';
 
 const router = express.Router();
@@ -22,6 +22,10 @@ router.get('/',(request,response)=>{
     return response.status(234).send('welcome');
 });
 
+router.get('/signUp',async (req,res)=>{
+    const uninqueTags = await retrievelist();
+    res.json(uninqueTags);
+})
 router.post('/saveData', async (req, res) => {
     try {
       const newData = new Data(req.body);
@@ -88,7 +92,6 @@ router.get('/notifications', async (req, res) => {
   if (!bearerToken) {
     return res.status(401).json({ error: 'Unauthorized: No token provided' });
   }
-
   // Extract the token without the "Bearer " prefix
   const token = bearerToken.split(' ')[1];
 
@@ -104,8 +107,8 @@ router.get('/notifications', async (req, res) => {
         const endIndex = page * limit;
         let str=decoded.userData.updates_required;
         const interests = str.split(","); 
-        const allNotifications = await retrieveData(interests);
-        console.log (allNotifications) // Retrieve all notifications (modify as per your actual retrieval logic)
+        const allNotifications = await retrieveData(interests);  // Retrieve all notifications (modify as per your actual retrieval logic)
+        //console.log (allNotifications)
         const paginatedNotifications = allNotifications.slice(startIndex, endIndex);
     
         res.json(paginatedNotifications);

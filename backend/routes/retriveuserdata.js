@@ -23,7 +23,7 @@ async function retrieveData(tagValue) {
     const collection = db.db().collection(collectionName);// Access the collection
     console.log("val=",tagValue)
     const filter = {
-        $or: tagValue.map(value => ({ tag: new RegExp(value, 'i') }))
+        $or: tagValue.map(value => ({ tag: new RegExp(value.trimStart(), 'i') }))
     };
     const documents = await collection.find(filter).toArray();
     return documents;
@@ -37,10 +37,10 @@ async function retrievelist() {
     const collectionName = 'data'; // Specify the collection name
     const collection = db.db().collection(collectionName);// Access the collection
     const uniqueTags = await collection.distinct('tag');
-    const uniqueColleges = await collection.distinct('college');
-    return uniqueTags,uniqueColleges;
+    // const uniqueColleges = await collection.distinct('college');
+    return uniqueTags;
     } catch (error) {
         console.error("Error querying collection:", error);
     }
 }
-export {retrieveUser,retrieveData};
+export {retrieveUser,retrieveData,retrievelist};

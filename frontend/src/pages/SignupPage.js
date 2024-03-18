@@ -10,11 +10,25 @@ import './css/preference.css';
 
 const SignupPage = () => {
 
-  const options = ['Geci Events', 'Geci Announcements', 'Scholarships', 'Jobs', 'Cet Event', 'Gect Announcemeents', 'Nitc Event']; // Sample options
+  const options = ['Geci Events', 'Geci Announcements', 'Scholarships', 'Jobs', 'Cet Events', 'Gect Announcemeents', 'Nitc Events']; // Sample options
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
+    const [list,setList] =useState([]);
+   
+    useEffect(() => {
+      const fetchOptions = async () => {
 
-
+         try {
+             const response = await axios.get(`http://localhost:8888/signUp`);
+             setList(response.data);
+             console.log("hiiiii"+response.data);
+         } catch (error) {
+             console.error('Error fetching data:', error);
+         }
+     };
+      
+      fetchOptions();
+    }, []);
     const handleSelectChange = (e) => {
       const value = e.target.value;
       if (value !== '' && !selectedOptions.includes(value)) {
@@ -192,9 +206,9 @@ return (
         <label htmlFor="updates">Choose Updates</label>
         <select className="form-control" value={inputValue} onChange={handleSelectChange} style={{ height: '50px',width:'95%' }}>
           <option value="">Choose Updates</option>
-          {options.map((option) => (
+          {list.map((option) => (
             <option key={option} value={option}>
-              {option}
+                {option}
             </option>
           ))}
         </select>

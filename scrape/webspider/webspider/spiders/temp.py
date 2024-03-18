@@ -39,7 +39,7 @@ class CrawlingSpider(CrawlSpider):
                     "date": formatted_date,
                     "geci_document_link": document_link,
                     "college": "geci",
-                    "tag": "geci announcements",
+                    "tag": "Geci Announcements",
                     "page_link":page_link,
                 }
             # yield scrapy.Request(document_link, callback=self.save_pdf, meta={'title': item.css('.news-title::text').get(),'date': formatted_date,
@@ -56,7 +56,7 @@ class CrawlingSpider(CrawlSpider):
                 "title": announcement.css('a::text').get(),
                 "gect_document_link": document_link,
                 "college":"gect",
-                "tag":"gect announcements",
+                "tag":"Gect Announcements",
             }
 
     def parse_cet(self, response):
@@ -82,7 +82,7 @@ class CrawlingSpider(CrawlSpider):
                     "title": header_title,
                     "date": formatted_date,
                     "cet_content": content,
-                    "tag":"cet events",
+                    "tag":"Cet Events",
                     "college":"cet",
                     "page_link":page_link,
                 }
@@ -105,7 +105,7 @@ class CrawlingSpider(CrawlSpider):
                 "date": formatted_date,
                 "title": title,
                 "college":"nitc",
-                "tag":"nitc event",
+                "tag":"Nitc Events",
             }
 
     # def save_pdf(self, response):
