@@ -113,7 +113,7 @@ router.get('/notifications', async (req, res) => {
         // console.log("data=",decoded);
         let str=decoded.userData.updates_required;
         const interests = str.split(","); 
-        // console.log(interests)
+        console.log(interests)
         const allNotifications = await retrieveData(interests);
         // console.log(allNotifications);
         res.json(allNotifications)

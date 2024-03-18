@@ -27,7 +27,7 @@ class CrawlingSpider(CrawlSpider):
                             # Extract date components
             day = item.css('h3::text').get()
             month_year = item.css('div.col-1.notice-item-date span::text').get()
-
+            page_link = response.url
             # Parse and format the date
             parsed_date = datetime.strptime(f"{day} {month_year}", "%d %b,%Y")
             formatted_date = parsed_date.strftime("%d %b %Y")
@@ -40,6 +40,7 @@ class CrawlingSpider(CrawlSpider):
                     "geci_document_link": document_link,
                     "college": "geci",
                     "tag": "geci announcements",
+                    "page_link":page_link,
                 }
             # yield scrapy.Request(document_link, callback=self.save_pdf, meta={'title': item.css('.news-title::text').get(),'date': formatted_date,
             #                                                                    'college': 'geci'})
@@ -65,6 +66,7 @@ class CrawlingSpider(CrawlSpider):
         
         for announcement in announcements:
             header_title = announcement.css('h2.entry-title a::text').get()
+            page_link=announcement.css('h2.entry-title a::attr(href)').get()
             date = announcement.css('time.entry-date.published::text').get()
             # Parse and format the date
             parsed_date = datetime.strptime(date, "%B %d, %Y")  # Use '%B' for the full month name
@@ -80,8 +82,9 @@ class CrawlingSpider(CrawlSpider):
                     "title": header_title,
                     "date": formatted_date,
                     "cet_content": content,
-                    "tag":"cet event",
+                    "tag":"cet events",
                     "college":"cet",
+                    "page_link":page_link,
                 }
 
     def parse_nitc(self, response):
