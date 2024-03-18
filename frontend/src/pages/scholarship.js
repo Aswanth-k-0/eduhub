@@ -4,13 +4,27 @@ import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import './css/scholarship.css';
+import { decodeToken } from 'react-jwt';
 
-const jobs=() => {
+const Scholarships=() => {
+  
+  const token = localStorage.getItem('token');
+  let user=null;
+  // Decode the token to get user information
+  if (token) {
+    const decodedToken = decodeToken(token);
+    user = decodedToken.userData;
+    // Access individual fields within 'userData'
+  } else {
+    // Handle the case where there's no token in local storage
+    console.error('No token found in local storage');
+  }
+
     return (
         <div>
         <header id="header" className="fixed-top">
       <div className="container d-flex align-items-start">
-        <a href="#" className="logo"><img src="/assets/img/logo.png" alt="" className="img-fluid" /></a>
+        
 
         <h1 className="logoText"><a href="#">Edu-hub</a></h1>
         
@@ -46,17 +60,20 @@ const jobs=() => {
             <div className="col-md-4 mb-3" >
               <div className="card">
                 <div className="card-body">
+                {user && (
                   <div className="d-flex flex-column align-items-center text-center">
-                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" className="rounded-circle" width="150"/>
+                    <img src= {user.photo}  alt="Admin" className="rounded-circle" width="150"/>
                     <div className="mt-3">
-                      <h4>John Doe</h4>
+                      <h4 className='name'>{user.name}</h4>
                       <div className="row">
                       <div className="col-sm-12">
-                      <a className="btn btn-info " target="__blank" href="./profile">View Full Profile</a>
+                      <a className="btn btn-info " target="__blank"><Link to={{pathname:"/profile",state: {userData:user} }}>View Full Profile</Link></a>
                     </div>
                   </div>
+                 
                     </div>
                   </div>
+                   )}
                 </div>
               </div>
               <div className="card1 mt-3">
@@ -165,5 +182,5 @@ const jobs=() => {
     };
 
    
-export default jobs;
+export default  Scholarships;
 

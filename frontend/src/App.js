@@ -13,6 +13,7 @@ import Profile from './pages/profile';
 import Scholarship from './pages/scholarship';
 import Jobs from './pages/jobs';
 import Notifications from './pages/notifications';
+import Edit from './pages/edit';
 
 
 function App() {
@@ -28,7 +29,7 @@ function App() {
           <Route path="/scholarship" element={<Scholarship/>} />
           <Route path="/jobs" element={<Jobs/>} />
           <Route path="/notifications" element={<Notifications/>} />
-          
+          <Route path="/Edit" element={<Edit/>} />
           </Routes>
           </BrowserRouter>
   );

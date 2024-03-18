@@ -7,8 +7,21 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import axios from 'axios';
 import './css/preference.css';
+import { decodeToken } from 'react-jwt';
 
-const SignupPage = () => {
+const Edit = () => {
+  
+  const token = localStorage.getItem('token');
+  let user=null;
+  // Decode the token to get user information
+  if (token) {
+    const decodedToken = decodeToken(token);
+    user = decodedToken.userData;
+    // Access individual fields within 'userData'
+  } else {
+    // Handle the case where there's no token in local storage
+    console.error('No token found in local storage');
+  }
 
   const options = ['Geci Events', 'Geci Announcements', 'Scholarships', 'Jobs']; // Sample options
     const [selectedOptions, setSelectedOptions] = useState([]);
@@ -134,31 +147,32 @@ return (
 <br/><br/>
 <br/>
 <div className="form" style={{ margin: '10px' }}>
+{user && (
       <form onSubmit={handleSubmit} >
-     
+    
         <div className="form row">
           <div className="form-group col-md-4">
             <label htmlFor="name">Name</label>
-            <input type="text" id="name" name="name" className="form-control" value={formData.name} onChange={handleChange} />
+            <input type="text" id="name" name="name" className="form-control" value={formData.name || user.name} onChange={handleChange} />
           </div>
           <div className="form-group col-md-4">
             <label htmlFor="mobileNumber">Mobile Number</label>
-            <input type="text" id="mobileNumber" name="mobileNumber" className="form-control" value={formData.mobileNumber} onChange={handleChange} />
+            <input type="text" id="mobileNumber" name="mobileNumber" className="form-control" value={formData.mobileNumber || user.mobileNumber} onChange={handleChange} />
           </div>
           <div className="form-group col-md-4">
             <label htmlFor="occupation">Occupation</label>
-            <input type="text" id="occupation" name="occupation" className="form-control" value={formData.occupation} onChange={handleChange} />
+            <input type="text" id="occupation" name="occupation" className="form-control" value={formData.occupation || user.occupation} onChange={handleChange} />
           </div>
         </div>
 
         <div className="form row" style={{marginTop:'20px'}}>
           <div className="form-group col-md-4">
             <label htmlFor="email">Email</label>
-            <input type="email" id="email" name="email" className="form-control" value={formData.email} onChange={handleChange} />
+            <input type="email" id="email" name="email" className="form-control" value={formData.email || user.email} onChange={handleChange} />
           </div>
           <div className="form-group col-md-4">
             <label htmlFor="state">State</label>
-            <input type="text" id="state" name="state" className="form-control" value={formData.state} onChange={handleChange} />
+            <input type="text" id="state" name="state" className="form-control" value={formData.state || user.state} onChange={handleChange} />
           </div>
           <div className="form-group col-md-4">
             <label htmlFor="photo" className="form-label">Photo</label>
@@ -169,15 +183,15 @@ return (
         <div className="form row" style={{marginTop:'20px'}}>
           <div className="form-group col-md-4">
             <label htmlFor="district">District</label>
-            <input type="text" id="district" name="district" className="form-control" value={formData.district} onChange={handleChange} />
+            <input type="text" id="district" name="district" className="form-control" value={formData.district || user.district} onChange={handleChange} />
           </div>
           <div className="form-group col-md-4">
         <label htmlFor="role">Role</label>
-        <input type="text" className="form-control" id="role" placeholder="Role" value={formData.role} onChange={handleChange} name="role" />
+        <input type="text" className="form-control" id="role" placeholder="Role" value={formData.role || user.role} onChange={handleChange} name="role" />
       </div>
       <div className="form-group col-md-4">
         <label htmlFor="designation" >Designation</label>
-        <select id="designation" name="designation" className="form-control form-control-lg" value={formData.designation} onChange={handleChange} >
+        <select id="designation" name="designation" className="form-control form-control-lg" value={formData.designation || user.designation} onChange={handleChange} >
         <option value="">Designation</option>
           <option value="Student">Student</option>
           <option value="Placement officer">Placement officer</option>
@@ -217,11 +231,11 @@ return (
         <div className="form row" style={{marginTop:'20px'}}>
         <div className="form-group col-md-4">
             <label htmlFor="username">Username</label>
-            <input type="text" id="username" name="username" className="form-control" value={formData.username} onChange={handleChange} />
+            <input type="text" id="username" name="username" className="form-control" value={formData.username || user.username} onChange={handleChange} />
           </div>
           <div className="form-group col-md-4">
             <label htmlFor="password">Password</label>
-            <input type="password" id="password" name="password" className="form-control" value={formData.password} onChange={handleChange} />
+            <input type="password" id="password" name="password" className="form-control" value={formData.password || user.password} onChange={handleChange} />
           </div>
           <div className="form-group col-md-4">
             <label htmlFor="re-password">Re-Enter Password</label>
@@ -247,10 +261,11 @@ return (
           <button type="button" style={{ width: '200px', marginLeft: '10px' }} className="btn btn-primary" onClick={handleClear}>Clear</button>
         </center>
       </form>
+)}
     </div>
   </div>
   );
 };
 
-export default SignupPage;
+export default Edit;
 

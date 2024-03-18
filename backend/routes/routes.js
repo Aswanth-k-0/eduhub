@@ -81,7 +81,7 @@ router.get('/profile',verifyToken ,async (req, res) => {
     const user = req.user; 
     res.status(200).json({ status: 'success', message: 'Authentication successful', user });
   });
-router.get('/notifications', async (req, res) => {
+router.get('/notifications',verifyToken, async (req, res) => {
   // console.log('Cookies:', req.headers);
   const bearerToken = req.headers.authorization;
 
@@ -94,7 +94,7 @@ router.get('/notifications', async (req, res) => {
 
   try {
       const decoded = jwt.verify(token,SECRET_KEY);
-      console.log("data=",decoded);
+       console.log("data=",decoded);
       // const designation = decoded.userData.designation;
       if(req.query.page){
         const page = parseInt(req.query.page) || 1; // Get page number from the query parameter, default to 1
@@ -109,12 +109,12 @@ router.get('/notifications', async (req, res) => {
         res.json(paginatedNotifications);
       }else{
         const decoded = jwt.verify(token,SECRET_KEY);
-        console.log("data=",decoded);
+        // console.log("data=",decoded);
         let str=decoded.userData.updates_required;
         const interests = str.split(","); 
-        console.log(interests)
+        console.log("jgjh",interests)
         const allNotifications = await retrieveData(interests);
-        // console.log(allNotifications);
+        console.log(allNotifications);
         res.json(allNotifications)
       }
     } catch (error) {

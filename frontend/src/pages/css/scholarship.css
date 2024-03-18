@@ -198,3 +198,10 @@ body{
 .progress-bar{
     width: 55%;
 }
+.name{
+    font-weight: 600 !important;
+    font-family: sans-serif;
+}
+.name::first-letter {
+    text-transform: uppercase;
+  }
