@@ -80,9 +80,9 @@ const Home = () => {
                   <div className="d-flex flex-column align-items-center text-center">
                     <img src={user.photo}  alt="Admin" className="rounded-circle" width="150"/>
                     <div className="mt-3">
-                      <h4>{user.name}</h4>
-                      <p className="text-secondary mb-1">{user.designation}</p>
-                      <p className="text-muted font-size-sm">{user.role}</p>
+                      <h4 className='name'>{user.name}</h4>
+                      <p className="other text-secondary mb-1">{user.designation}</p>
+                      <p className="other text-muted font-size-sm">{user.role}</p>
                       <div className="row">
                     <div className="col-sm-12">
                       <a className="btn btn-info " target="__blank"><Link to={{pathname:"/profile",state: {userData:user} }}>View Full Profile</Link></a>
