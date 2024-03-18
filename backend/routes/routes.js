@@ -94,7 +94,7 @@ router.get('/notifications',verifyToken, async (req, res) => {
 
   try {
       const decoded = jwt.verify(token,SECRET_KEY);
-       console.log("data=",decoded);
+      // console.log("data=",decoded);
       // const designation = decoded.userData.designation;
       if(req.query.page){
         const page = parseInt(req.query.page) || 1; // Get page number from the query parameter, default to 1
@@ -102,8 +102,9 @@ router.get('/notifications',verifyToken, async (req, res) => {
         
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
-    
-        const allNotifications = await retrieveData(); // Retrieve all notifications (modify as per your actual retrieval logic)
+        let str=decoded.userData.updates_required;
+        const interests = str.split(","); 
+        const allNotifications = await retrieveData(interests); // Retrieve all notifications (modify as per your actual retrieval logic)
         const paginatedNotifications = allNotifications.slice(startIndex, endIndex);
     
         res.json(paginatedNotifications);
@@ -112,7 +113,7 @@ router.get('/notifications',verifyToken, async (req, res) => {
         // console.log("data=",decoded);
         let str=decoded.userData.updates_required;
         const interests = str.split(","); 
-        console.log("jgjh",interests)
+        console.log(interests)
         const allNotifications = await retrieveData(interests);
         console.log(allNotifications);
         res.json(allNotifications)
@@ -122,7 +123,15 @@ router.get('/notifications',verifyToken, async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
-
+  router.get('/verify',(req,res)=>{
+      const token = req.headers.authorization;
+    
+      if (!token) {
+         res.status(401).json({ message: 'Unauthorized: No token provided' });
+      }else{
+         res.status(200).json({message:"user verifie"})
+      }
+  })
 router.post('/saveUser', upload.single('photo'), async (req, res) => {
     try {
      // const userId = generateUserId();
