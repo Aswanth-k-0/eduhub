@@ -8,19 +8,35 @@ import './css/notifications.css';
 
 const Notifications = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedValues, setSelectedValues] = useState([]);
+    const [selectedValues, setSelectedValues] = useState(['']);
 
-  const toggleDropdown = () => {
-      setIsOpen(!isOpen);
-  };
+    const options = ['Subject', 'Date', 'Summarized Text', 'College', 'View Document'];
 
-  const handleSelect = (value) => {
-      if (selectedValues.includes(value)) {
-          setSelectedValues(selectedValues.filter(item => item !== value));
-      } else {
-          setSelectedValues([...selectedValues, value]);
-      }
-  };
+    const toggleDropdown = () => {
+        setIsOpen(!isOpen);
+    };
+
+    const handleSelect = (index, value) => {
+        const newValues = [...selectedValues];
+        newValues[index] = value;
+        setSelectedValues(newValues);
+    };
+
+    const handleAddDropdown = () => {
+        setSelectedValues([...selectedValues, '']);
+    };
+
+    const handleRemoveDropdown = (index) => {
+        const newValues = [...selectedValues];
+        newValues.splice(index, 1);
+        setSelectedValues(newValues);
+    };
+
+    const handleChange = (index, event) => {
+        const newValues = [...selectedValues];
+        newValues[index] = event.target.value;
+        setSelectedValues(newValues);
+    };
 
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
@@ -141,6 +157,9 @@ const Notifications = () => {
                       <h5>{item.title}</h5>
                       <h5>College: {item.college}</h5>
                       <p>Date: {item.date}</p>
+                      {item.summarized_text ? (
+                      <p>Summarized:{item.summarized_text}</p>
+                      ) : null}
                       {item.document_link ? (
                         <a href={item.document_link} target="_blank" rel="noopener noreferrer">
                           View Document
@@ -201,42 +220,30 @@ const Notifications = () => {
             <div className="car-body1">
                 <h3 onClick={toggleDropdown} style={{ cursor: 'pointer' }}>
                     Format
-                    <span className="float-end" style={{marginRight:'20px'}}>{isOpen ? '-' : '+'}</span>
+                    <span className="float-end" style={{ marginRight: '20px' }}>{isOpen ? '-' : '+'}</span>
                 </h3>
                 {isOpen && (
-                    <div className="dropdown">
-                        <div className="dropdown-menu" style={{ display: 'block' }}>
-                            {selectedValues.includes('subject') ? (
-                                <button className="dropdown-item active" onClick={() => handleSelect('subject')}>Subject</button>
-                            ) : (
-                                <button className="dropdown-item" onClick={() => handleSelect('subject')}>Subject</button>
-                            )}
-                            {selectedValues.includes('date') ? (
-                                <button className="dropdown-item active" onClick={() => handleSelect('date')}>Date</button>
-                            ) : (
-                                <button className="dropdown-item" onClick={() => handleSelect('date')}>Date</button>
-                            )}
-                            {selectedValues.includes('college') ? (
-                                <button className="dropdown-item active" onClick={() => handleSelect('college')}>College</button>
-                            ) : (
-                                <button className="dropdown-item" onClick={() => handleSelect('college')}>College</button>
-                            )}
-                            {selectedValues.includes('viewPage') ? (
-                                <button className="dropdown-item active" onClick={() => handleSelect('viewPage')}>View Page</button>
-                            ) : (
-                                <button className="dropdown-item" onClick={() => handleSelect('viewPage')}>View Page</button>
-                            )}
-                            {selectedValues.includes('viewLink') ? (
-                                <button className="dropdown-item active" onClick={() => handleSelect('viewLink')}>View Link</button>
-                            ) : (
-                                <button className="dropdown-item" onClick={() => handleSelect('viewLink')}>View Link</button>
-                            )}
-                            {selectedValues.includes('summarizedText') ? (
-                                <button className="dropdown-item active" onClick={() => handleSelect('summarizedText')}>Summarized Text</button>
-                            ) : (
-                                <button className="dropdown-item" onClick={() => handleSelect('summarizedText')}>Summarized Text</button>
-                            )}
+                    <div style={{marginRight:'30px'}}>
+                        {selectedValues.map((value, index) => (
+                            <div key={index} className="dropdown mb-3" style={{ display: 'flex', alignItems: 'center' }}>
+                            <div style={{ flex: '1' }}>
+                                <input
+                                    list={`options-${index}`}
+                                    value={value}
+                                    onChange={(event) => handleChange(index, event)}
+                                    className="form-control"
+                                />
+                                <datalist id={`options-${index}`}>
+                                    {options.map((option, idx) => (
+                                        <option key={idx} value={option} />
+                                    ))}
+                                </datalist>
+                            </div>
+                            <span onClick={() => handleRemoveDropdown(index)} style={{ cursor: 'pointer', fontSize: '30px', marginLeft: '10px' }}>×</span>
                         </div>
+                        ))}
+                       <span> <button className="btn btn-primary" style={{width:'150px'}} onClick={handleAddDropdown}>Add Dropdown</button>
+                <button className="btn btn-success" style={{width:'150px',marginLeft:'20px'}} >Save</button> </span>
                     </div>
                 )}
             </div>
