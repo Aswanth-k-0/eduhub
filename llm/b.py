@@ -64,7 +64,10 @@ def upload_document_to_summarization(pdf_text):
         # Extract the summarized paragraph from the response
         if "candidates" in response_data and response_data["candidates"]:
             summarized_text = response_data["candidates"][0]["content"]["parts"][0]["text"]
-            return summarized_text
+            # Remove blank lines (newlines)
+            summarized_text = "\n".join(line for line in summarized_text.splitlines() if line.strip())
+            summarized_text = summarized_text.replace("*", "")
+            return summarized_text.strip()
         else:
             return "No summarized paragraph found in the response."
     else:
