@@ -9,7 +9,7 @@ import os
 # MongoDB connection settings
 MONGO_URI = "mongodb://localhost:27017/"
 DB_NAME = "edu-hub"
-DATAS_COLLECTION_NAME = "datas"
+DATAS_COLLECTION_NAME = "data"
 LLM_COLLECTION_NAME = "llm"
 
 # API endpoint for the summarization service

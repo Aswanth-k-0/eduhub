@@ -7,6 +7,21 @@ import 'font-awesome/css/font-awesome.min.css';
 import './css/notifications.css';
 
 const Notifications = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedValues, setSelectedValues] = useState([]);
+
+  const toggleDropdown = () => {
+      setIsOpen(!isOpen);
+  };
+
+  const handleSelect = (value) => {
+      if (selectedValues.includes(value)) {
+          setSelectedValues(selectedValues.filter(item => item !== value));
+      } else {
+          setSelectedValues([...selectedValues, value]);
+      }
+  };
+
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -183,10 +198,49 @@ const Notifications = () => {
               </div>
               <br />
               <div className="car mb-3">
-                <div className="car-body1">
-                  <h3>Set Alert</h3>
-                </div>
-              </div>
+            <div className="car-body1">
+                <h3 onClick={toggleDropdown} style={{ cursor: 'pointer' }}>
+                    Format
+                    <span className="float-end" style={{marginRight:'20px'}}>{isOpen ? '-' : '+'}</span>
+                </h3>
+                {isOpen && (
+                    <div className="dropdown">
+                        <div className="dropdown-menu" style={{ display: 'block' }}>
+                            {selectedValues.includes('subject') ? (
+                                <button className="dropdown-item active" onClick={() => handleSelect('subject')}>Subject</button>
+                            ) : (
+                                <button className="dropdown-item" onClick={() => handleSelect('subject')}>Subject</button>
+                            )}
+                            {selectedValues.includes('date') ? (
+                                <button className="dropdown-item active" onClick={() => handleSelect('date')}>Date</button>
+                            ) : (
+                                <button className="dropdown-item" onClick={() => handleSelect('date')}>Date</button>
+                            )}
+                            {selectedValues.includes('college') ? (
+                                <button className="dropdown-item active" onClick={() => handleSelect('college')}>College</button>
+                            ) : (
+                                <button className="dropdown-item" onClick={() => handleSelect('college')}>College</button>
+                            )}
+                            {selectedValues.includes('viewPage') ? (
+                                <button className="dropdown-item active" onClick={() => handleSelect('viewPage')}>View Page</button>
+                            ) : (
+                                <button className="dropdown-item" onClick={() => handleSelect('viewPage')}>View Page</button>
+                            )}
+                            {selectedValues.includes('viewLink') ? (
+                                <button className="dropdown-item active" onClick={() => handleSelect('viewLink')}>View Link</button>
+                            ) : (
+                                <button className="dropdown-item" onClick={() => handleSelect('viewLink')}>View Link</button>
+                            )}
+                            {selectedValues.includes('summarizedText') ? (
+                                <button className="dropdown-item active" onClick={() => handleSelect('summarizedText')}>Summarized Text</button>
+                            ) : (
+                                <button className="dropdown-item" onClick={() => handleSelect('summarizedText')}>Summarized Text</button>
+                            )}
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
               <div className="car mb-3">
                 <div className="car-body1">
                   <h3>Alerts</h3>
