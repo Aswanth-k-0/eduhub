@@ -9,8 +9,7 @@ import os
 # MongoDB connection settings
 MONGO_URI = "mongodb://localhost:27017/"
 DB_NAME = "edu-hub"
-DATAS_COLLECTION_NAME = "datas"
-LLM_COLLECTION_NAME = "llm"
+DATAS_COLLECTION_NAME = "data"
 
 # API endpoint for the summarization service
 SUMMARIZATION_API_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyAarxwx2-hGxae8qKlvoJLmW0ggWrwqHqo"
@@ -75,37 +74,32 @@ def upload_document_to_summarization(pdf_text):
 client = pymongo.MongoClient(MONGO_URI)
 db = client[DB_NAME]
 datas_collection = db[DATAS_COLLECTION_NAME]
-llm_collection = db[LLM_COLLECTION_NAME]
-
-# Function to handle document insertion in datas collection
-def handle_insertion(document):
-    document_link = document.get("document_link")
-    if document_link:
-        # Download PDF from URL
-        pdf_path = download_pdf_from_url(document_link)
-        if pdf_path:
-            # Extract text from downloaded PDF
-            pdf_text = extract_text_from_pdf(pdf_path)
-
-            # Upload document to summarization service
-            summarized_text = upload_document_to_summarization(pdf_text)
-
-            # Save the summarized text into the llm collection along with _id from datas collection
-            llm_collection.insert_one({"_id": document["_id"], "document_link": document_link, "summarized_text": summarized_text})
-            
-            # Clean up temporary PDF file
-            os.remove(pdf_path)
-        else:
-            print(f"Failed to download PDF from URL: {document_link}")
 
 # Polling loop
 while True:
     # Query for new documents
-    new_documents = datas_collection.find({"document_link": {"$exists": True}})
+    new_documents = datas_collection.find({"document_link": {"$exists": True}, "summarized_text": {"$exists": False}})
 
     # Process new documents
     for document in new_documents:
-        handle_insertion(document)
+        document_link = document.get("document_link")
+        if document_link:
+            # Download PDF from URL
+            pdf_path = download_pdf_from_url(document_link)
+            if pdf_path:
+                # Extract text from downloaded PDF
+                pdf_text = extract_text_from_pdf(pdf_path)
+
+                # Upload document to summarization service
+                summarized_text = upload_document_to_summarization(pdf_text)
+
+                # Update the document in the datas collection with the summarized text
+                datas_collection.update_one({"_id": document["_id"]}, {"$set": {"summarized_text": summarized_text}})
+                
+                # Clean up temporary PDF file
+                os.remove(pdf_path)
+            else:
+                print(f"Failed to download PDF from URL: {document_link}")
 
     # Wait for a specified interval before polling again (e.g., every 5 seconds)
     time.sleep(5)
