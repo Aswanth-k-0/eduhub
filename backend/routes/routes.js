@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import { SECRET_KEY } from '../config.js';
 import {verifyToken,storage} from './functions.js';
 import { userSchema } from "../models/userschema.js";
-import { retrieveData } from './retriveuserdata.js';
+import { retrieveData,retrievelist } from './retriveuserdata.js';
 import { all } from 'axios';
 
 const router = express.Router();
@@ -22,6 +22,10 @@ router.get('/',(request,response)=>{
     return response.status(234).send('welcome');
 });
 
+router.get('/signUp',async (req,res)=>{
+    const uninqueTags = await retrievelist();
+    res.json(uninqueTags);
+})
 router.post('/saveData', async (req, res) => {
     try {
       const newData = new Data(req.body);
@@ -88,13 +92,12 @@ router.get('/notifications', async (req, res) => {
   if (!bearerToken) {
     return res.status(401).json({ error: 'Unauthorized: No token provided' });
   }
-
   // Extract the token without the "Bearer " prefix
   const token = bearerToken.split(' ')[1];
 
   try {
       const decoded = jwt.verify(token,SECRET_KEY);
-      console.log("data=",decoded);
+      // console.log("data=",decoded);
       // const designation = decoded.userData.designation;
       if(req.query.page){
         const page = parseInt(req.query.page) || 1; // Get page number from the query parameter, default to 1
@@ -102,19 +105,21 @@ router.get('/notifications', async (req, res) => {
         
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
-    
-        const allNotifications = await retrieveData(); // Retrieve all notifications (modify as per your actual retrieval logic)
+        let str=decoded.userData.updates_required;
+        const interests = str.split(","); 
+        const allNotifications = await retrieveData(interests);  // Retrieve all notifications (modify as per your actual retrieval logic)
+        //console.log (allNotifications)
         const paginatedNotifications = allNotifications.slice(startIndex, endIndex);
     
         res.json(paginatedNotifications);
       }else{
         const decoded = jwt.verify(token,SECRET_KEY);
-        console.log("data=",decoded);
+        // console.log("data=",decoded);
         let str=decoded.userData.updates_required;
         const interests = str.split(","); 
         console.log(interests)
         const allNotifications = await retrieveData(interests);
-        // console.log(allNotifications);
+        console.log(allNotifications);
         res.json(allNotifications)
       }
     } catch (error) {
@@ -122,7 +127,15 @@ router.get('/notifications', async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
-
+  router.get('/verify',(req,res)=>{
+      const token = req.headers.authorization;
+    
+      if (!token) {
+         res.status(401).json({ message: 'Unauthorized: No token provided' });
+      }else{
+         res.status(200).json({message:"user verifie"})
+      }
+  })
 router.post('/saveUser', upload.single('photo'), async (req, res) => {
     try {
      // const userId = generateUserId();

@@ -33,6 +33,24 @@
     max-height: 40px;
   }
   
+  .navbar ul {
+    display: flex !important;
+    padding: 0!important;
+  }
+  
+  .navbar li {
+    margin-right: 10px!important;
+  }
+  
+  .navbar a {
+    display: inline-block!important;
+    padding: 10px!important; /* Adjust padding as needed */
+    min-width: 100px!important; /* Set a minimum width for each navbar item */
+    text-align: center!important;
+    text-decoration: none;
+    /* Adjust color as needed */
+  }
+  
   
   /*--------------------------------------------------------------
   # Navigation Menu

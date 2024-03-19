@@ -33,15 +33,17 @@ const Home = () => {
     // Handle the case where there's no token in local storage
     console.error('No token found in local storage');
   }
+  const handleLogout = () => {
+    // Clear user-related data from local storage
+    localStorage.removeItem('token');
 
+  };
   // console.log('hi',userData.user.name);
   const backendURL = 'http://localhost:8888';
     return (
         <div>
         <header id="header" className="fixed-top">
       <div className="container d-flex align-items-start">
-        <a href="#" className="logo"><img src="/assets/img/logo.png" alt="" className="img-fluid" /></a>
-
         <h1 className="logoText"><a href="#">Edu-hub</a></h1>
         
         <nav id="navbar" className="navbar ">
@@ -50,16 +52,17 @@ const Home = () => {
               <a className="nav-link" ><Link to="/Home">Home</Link></a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/Scholarship">Scholarships</a>
+            <a className="nav-link" > <Link to={{pathname:"/Scholarship",state: {userData:user} }}>Scholarships</Link></a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/Jobs">Jobs</a>
+            <a className="nav-link" > <Link to={{pathname:"/Jobs",state: {userData:user} }}>Jobs</Link></a>
+              
             </li>
             <li className="nav-item">
               <a className="nav-link" href="/Notifications">Notifications</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#" data-target="#myModal" data-toggle="modal"><Link to="/LoginPage">Logout</Link></a>
+            <Link to="/LoginPage" onClick={handleLogout}>Logout</Link>
             </li>
           </ul>
           <i className="bi bi-list mobile-nav-toggle"></i>
@@ -80,9 +83,9 @@ const Home = () => {
                   <div className="d-flex flex-column align-items-center text-center">
                     <img src={user.photo}  alt="Admin" className="rounded-circle" width="150"/>
                     <div className="mt-3">
-                      <h4>{user.name}</h4>
-                      <p className="text-secondary mb-1">{user.designation}</p>
-                      <p className="text-muted font-size-sm">{user.role}</p>
+                      <h4 className='name'>{user.name}</h4>
+                      <p className="other text-secondary mb-1">{user.designation}</p>
+                      <p className="other text-muted font-size-sm">{user.role}</p>
                       <div className="row">
                     <div className="col-sm-12">
                       <a className="btn btn-info " target="__blank"><Link to={{pathname:"/profile",state: {userData:user} }}>View Full Profile</Link></a>

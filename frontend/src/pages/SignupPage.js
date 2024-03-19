@@ -1,18 +1,34 @@
 
 import './css/header.css';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import axios from 'axios';
 import './css/preference.css';
 
 const SignupPage = () => {
-  const options = ['Geci Events', 'Geci Announcements', 'Scholarships', 'Jobs']; // Sample options
+
+  const options = ['Geci Events', 'Geci Announcements', 'Scholarships', 'Jobs', 'Cet Events', 'Gect Announcemeents', 'Nitc Events']; // Sample options
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [inputValue, setInputValue] = useState('');
+    const [list,setList] =useState([]);
+   
+    useEffect(() => {
+      const fetchOptions = async () => {
 
-
+         try {
+             const response = await axios.get(`http://localhost:8888/signUp`);
+             setList(response.data);
+             console.log("hiiiii"+response.data);
+         } catch (error) {
+             console.error('Error fetching data:', error);
+         }
+     };
+      
+      fetchOptions();
+    }, []);
     const handleSelectChange = (e) => {
       const value = e.target.value;
       if (value !== '' && !selectedOptions.includes(value)) {
@@ -121,7 +137,7 @@ return (
     <nav id="navbar" className="navbar ">
       <ul>
         <li className="nav-item">
-          <a className="nav-link" href="/LoginPage">Back</a>
+          <a className="nav-link" onClick={() => window.history.back()} href="#">Back</a>
         </li>
       </ul>
       <i className="bi bi-list mobile-nav-toggle"></i>
@@ -133,6 +149,7 @@ return (
 <br/>
 <div className="form" style={{ margin: '10px' }}>
       <form onSubmit={handleSubmit} >
+     
         <div className="form row">
           <div className="form-group col-md-4">
             <label htmlFor="name">Name</label>
@@ -189,9 +206,9 @@ return (
         <label htmlFor="updates">Choose Updates</label>
         <select className="form-control" value={inputValue} onChange={handleSelectChange} style={{ height: '50px',width:'95%' }}>
           <option value="">Choose Updates</option>
-          {options.map((option) => (
+          {list.map((option) => (
             <option key={option} value={option}>
-              {option}
+                {option}
             </option>
           ))}
         </select>
