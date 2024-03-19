@@ -90,8 +90,18 @@ body{
 }
 
 .happ2{
-    margin-left: 750px;
+    margin-right: 20px;
     margin-bottom: 10px;
+}
+
+.happ3{
+    margin-right: 20px;
+    margin-bottom: 10px;
+    background-color: #314b83;
+    color: #ffffff;
+}
+.happy3:hover{
+    color: #7975eb !important;
 }
 .happy1:hover{
     color: #08aee5;

@@ -37,7 +37,7 @@ class CrawlingSpider(CrawlSpider):
                 yield {
                     "title": item.css('.news-title::text').get(),
                     "date": formatted_date,
-                    "geci_document_link": document_link,
+                    "document_link": document_link,
                     "college": "geci",
                     "tag": "Geci Announcements",
                     "page_link":page_link,
@@ -54,7 +54,7 @@ class CrawlingSpider(CrawlSpider):
 
             yield { 
                 "title": announcement.css('a::text').get(),
-                "gect_document_link": document_link,
+                "page_link": document_link,
                 "college":"gect",
                 "tag":"Gect Announcements",
             }

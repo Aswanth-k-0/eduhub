@@ -22,6 +22,7 @@ const SignupPage = () => {
              const response = await axios.get(`http://localhost:8888/signUp`);
              setList(response.data);
              console.log("hiiiii"+response.data);
+             localStorage.setItem('options',response.data);
          } catch (error) {
              console.error('Error fetching data:', error);
          }

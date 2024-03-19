@@ -43,4 +43,21 @@ async function retrievelist() {
         console.error("Error querying collection:", error);
     }
 }
-export {retrieveUser,retrieveData,retrievelist};
+async function retrieveLatest() {
+    try {
+    const db = mongoose.connection.getClient(); // Access the MongoClient instance
+    const collectionName = 'data'; // Specify the collection name
+    const collection = db.db().collection(collectionName);// Access the collection
+    const pipeline = [
+        { $sort: { dateField: -1 } }, // Sort by dateField in descending order (-1)
+        { $limit: 10 } // Limit the result to the latest 5 documents
+    ];
+
+    // Execute the aggregation pipeline
+    const latestValues = await collection.aggregate(pipeline).toArray();
+    return latestValues
+    } catch (error) {
+        console.error("Error querying collection:", error);
+    }
+}
+export {retrieveUser,retrieveData,retrievelist,retrieveLatest};

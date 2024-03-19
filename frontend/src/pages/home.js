@@ -11,7 +11,7 @@ import './css/home.css';
 
 const Home = () => {
   // Extract user data from location state
- 
+  const [notifications,setNotifications]=useState([]);
   const token = localStorage.getItem('token');
   let user=null;
   // Decode the token to get user information
@@ -38,6 +38,24 @@ const Home = () => {
     localStorage.removeItem('token');
 
   };
+  useEffect(() => {
+    const fetchLatest = async () => {
+      const token = localStorage.getItem('token');
+       try {
+           const response = await axios.get(`http://localhost:8888/getLatest`,{
+             headers: {
+               Authorization: `Bearer ${token}`, // Add the token to the Authorization header
+             },
+             });
+           setNotifications(response.data);
+           console.log("hiiiii"+response.data);
+       } catch (error) {
+           console.error('Error fetching data:', error);
+       }
+   };
+    
+    fetchLatest();
+  }, []);
   // console.log('hi',userData.user.name);
   const backendURL = 'http://localhost:8888';
     return (
@@ -125,13 +143,30 @@ const Home = () => {
             <br></br>
 
 
-              <div className="card mb-3">
-                <div className="card-body1">
-                <h3>Latest</h3>
-                  
-
+            <div className="card mb-3">
+    <div className="card-body1">
+        <h3>Latest</h3>
+        {notifications.slice(0, 10).map((notification, index) => (
+            <div key={index} className="card" style={{
+              marginLeft: '40px' , maxHeight:'100px', marginRight: '20px',marginBottom:'20px', borderColor:'black',borderWidth:'1px'
+            }} >
+                <div className="card-body">
+                    <p>
+                        {notification.title} - {notification.college} 
+                        {/* Check if document_link is available */}
+                        {notification.document_link ? (
+                            // If document_link is available, render the anchor tag with the link
+                            <span>&nbsp; &nbsp; &nbsp;<a className="happ3 btn btn-info end-0" href={notification.document_link}>View</a></span>
+                        ) : (
+                            // If document_link is not available, render the default link (notification.page_link)
+                            <span>&nbsp; &nbsp; &nbsp;<a className="happ3 btn btn-info end-0" href={notification.page_link}>View</a></span>
+                        )}
+                    </p>
                 </div>
-              </div>
+            </div>
+        ))}
+    </div>
+</div>
               <div className="card mb-3">
                 <div className="card-body2">
                 <h4>What are you looking for?</h4>

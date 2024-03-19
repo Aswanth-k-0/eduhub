@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 import { SECRET_KEY } from '../config.js';
 import {verifyToken,storage} from './functions.js';
 import { userSchema } from "../models/userschema.js";
-import { retrieveData,retrievelist } from './retriveuserdata.js';
+import { retrieveData,retrievelist,retrieveLatest } from './retriveuserdata.js';
 import { all } from 'axios';
 
 const router = express.Router();
@@ -85,6 +85,52 @@ router.get('/profile',verifyToken ,async (req, res) => {
     const user = req.user; 
     res.status(200).json({ status: 'success', message: 'Authentication successful', user });
   });
+
+router.post('/editUser',async(req,res)=>{
+  try {
+    // const userId = generateUserId();
+     console.log('Cookies:', req.headers);
+     console.log(req.body); 
+     const bearerToken = req.headers.authorization;
+
+     if (!bearerToken) {
+       return res.status(401).json({ error: 'Unauthorized: No token provided' });
+     }
+     // Extract the token without the "Bearer " prefix
+     const token = bearerToken.split(' ')[1];
+     let decoded= jwt.verify(token,SECRET_KEY);
+     let str=decoded.userData.username;// Generate user ID
+     const { name, mobileNumber, occupation, email, state, district, username, password, role, designation, updates_required } = req.body;
+     console.log(req.body);
+     filePath = `/uploads/${req.file.filename}`;
+     console.log('file',filePath);
+     // Create a new user instance with photo path
+     const newUser = new User({
+       name,
+       mobileNumber,
+       occupation,
+       email,
+       state,
+       photo: filePath, // Save the file path in the photo field
+       district,
+       username,
+       password,
+       role,
+       designation,
+       updates_required:updates_required,
+     });
+     console.log("asd",newUser.username)
+     await User.findOneAndUpdate(
+      { username:str },
+      update,
+      { new: true } // Return the updated user document
+    );
+     res.status(201).json({ message: 'User saved successfully' });
+   } catch (error) {
+     console.error('Error saving user:', error);
+     res.status(500).json({ error: 'Internal server error' });
+   }
+})
 router.get('/notifications', async (req, res) => {
   // console.log('Cookies:', req.headers);
   const bearerToken = req.headers.authorization;
@@ -127,6 +173,28 @@ router.get('/notifications', async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
+  router.get('/getLatest', async (req, res) => {
+    // console.log('Cookies:', req.headers);
+    const bearerToken = req.headers.authorization;
+  
+    if (!bearerToken) {
+      return res.status(401).json({ error: 'Unauthorized: No token provided' });
+    }
+    // Extract the token without the "Bearer " prefix
+    const token = bearerToken.split(' ')[1];
+  
+    try {
+        const decoded = jwt.verify(token,SECRET_KEY);
+        // console.log("data=",decoded);
+          let str=decoded.userData.updates_required;
+          const allNotifications = await retrieveLatest();  // Retrieve all notifications (modify as per your actual retrieval logic)
+          console.log(allNotifications);
+          res.json(allNotifications);
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+      }
+    });
   router.get('/verify',(req,res)=>{
       const token = req.headers.authorization;
     

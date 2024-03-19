@@ -170,12 +170,17 @@ const Profile = () => {
               <div className="card mb-3">
                 <div className="card-body1">
                 <h3 style={{fontWeight:'550'}}>Notifications</h3>
+                <br />
                 <ul>
-                    {notifications.map((notification, index) => (
-                      <li key={index}>{notification.title}</li>
-                    ))}
+                {notifications.slice(0, 5).map((notification, index) => (
+                <li key={index}>
+                    {notification.title} - {notification.college} 
+                    &nbsp; &nbsp; &nbsp;<a className="happ3 btn btn-info position-absolute end-0"  href="./Notifications">View</a>
+                    <br /><br />
+                </li>
+            ))}
                   </ul>
-                <div className="col-sm-12 position-absolute bottom-0 end-0">
+                <div className=" position-absolute bottom-0 end-0">
                       <a className="happ2 btn btn-info " target="__blank" href="./Notifications">View All</a>
                     </div>
                 </div>
