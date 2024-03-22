@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
 import './css/header.css';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -11,7 +13,7 @@ const Notifications = () => {
     const [selectedValues, setSelectedValues] = useState(['']);
 
     const options = ['Subject', 'Date', 'Summarized Text', 'College', 'View Document'];
-
+    const token = localStorage.getItem('token');
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
@@ -23,7 +25,12 @@ const Notifications = () => {
     };
 
     const handleAddDropdown = () => {
-        setSelectedValues([...selectedValues, '']);
+      if (selectedValues.some(value => value.trim() === '')) {
+        alert('Please initialize all dropdowns before adding a new one.');  
+        return;  
+      }
+      
+      setSelectedValues([...selectedValues, '']); // Add a new dropdown if all dropdowns are initialized
     };
 
     const handleRemoveDropdown = (index) => {
@@ -70,8 +77,43 @@ const Notifications = () => {
     localStorage.removeItem('token');
   };
 
+const handleSave = async () => {
+  try {
+    const selectedDropdownValues = selectedValues.filter(value => value.trim() !== ''); // Filter out empty values
+    // Send the selected values to the backend
+    const response =await axios.post('http://localhost:8888/saveFormat', {
+      dropdownValues: selectedDropdownValues,
+    }, {
+      headers: {
+        Authorization: `${token}`,
+      },
+    });
+    if (response.status === 201) {
+      // Success notification
+      toast.success('Format updated successfully!', {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        toastId: 'format-update-success', // Optional: unique ID for manual closing
+      });
+
+      // Optionally, clear selected values after saving
+      setSelectedValues(['']);
+    } else {
+      console.error('Unexpected response from server:', response);
+      // Handle unsuccessful response (e.g., display a more specific error message)
+    }
+
+    // Optionally, you can clear the selected values after saving
+    setSelectedValues(['']);
+  } catch (error) {
+    console.error('Error saving dropdown values:', error);
+  }
+};
+
   const handleSearch = async () => {
-    const token = localStorage.getItem('token');
+
     try {
       const response = await axios.get('http://localhost:8888/notifications', {
         headers: {
@@ -88,7 +130,7 @@ const Notifications = () => {
       console.error('Error searching data:', error);
     }
   };
-
+  
   useEffect(() => {
     if (searchTerm) {
       handleSearch();
@@ -99,6 +141,7 @@ const Notifications = () => {
 
   return (
     <div>
+      <ToastContainer/>
       <header id="header" className="fixed-top">
         <div className="container d-flex align-items-start">
           <a href="#" className="logo">
@@ -243,7 +286,7 @@ const Notifications = () => {
                         </div>
                         ))}
                        <span> <button className="btn btn-primary" style={{width:'150px'}} onClick={handleAddDropdown}>Add Dropdown</button>
-                <button className="btn btn-success" style={{width:'150px',marginLeft:'20px'}} >Save</button> </span>
+                <button className="btn btn-success" style={{width:'150px',marginLeft:'20px'}} onClick={handleSave}>Save</button> </span>
                     </div>
                 )}
             </div>

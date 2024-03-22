@@ -21,18 +21,38 @@ router.get('/',(request,response)=>{
     console.log(request)
     return response.status(234).send('welcome');
 });
-
 router.get('/signUp',async (req,res)=>{
     const uninqueTags = await retrievelist();
     res.json(uninqueTags);
 })
+router.post('/saveFormat',verifyToken,async (req,res)=>{
+  let selectedOptions = req.body.dropdownValues;
+  let user = req.user.userData.username;
+  // console.log("hel=",selectedOptions);
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { username: user },
+      { $set: { format: selectedOptions } }, // Update 'format' field with selected options
+      { new: true } // Return the updated user document
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.status(201).json({ message: 'User format saved successfully', updatedUser });
+  } catch (error) {
+    console.error(error); // Log the error for debugging
+    res.status(500).json({ error: 'Internal server error' }); // Generic error for unexpected issues
+  }
+});
 router.post('/saveData', async (req, res) => {
     try {
       const newData = new Data(req.body);
       await newData.save();
 
       db.collection(user, (err, collection) => {
-        if (err) {
+        if (err) { 
             console.error("Error accessing collection:", err);
             return;
         }
@@ -173,7 +193,7 @@ router.get('/notifications', async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   });
-  router.get('/getLatest', async (req, res) => {
+router.get('/getLatest', async (req, res) => {
     // console.log('Cookies:', req.headers);
     const bearerToken = req.headers.authorization;
   
