@@ -14,6 +14,7 @@ const encoder =bodyParser.urlencoded({extended:true});
 
 const upload = multer({ storage: storage });
 let filePath=" ";
+let filePath1=" ";
 const User = mongoose.model('Users', userSchema);
 
 
@@ -123,7 +124,9 @@ router.post('/editUser',async(req,res)=>{
      const { name, mobileNumber, occupation, email, state, district, username, password, role, designation, updates_required } = req.body;
      console.log(req.body);
      filePath = `/uploads/${req.file.filename}`;
+     filePath1 = `/id/${req.file.filename}`;
      console.log('file',filePath);
+     console.log('file',filePath1);
      // Create a new user instance with photo path
      const newUser = new User({
        name,
@@ -138,6 +141,7 @@ router.post('/editUser',async(req,res)=>{
        role,
        designation,
        updates_required:updates_required,
+       id_proof: filePath1,
      });
      console.log("asd",newUser.username)
      await User.findOneAndUpdate(
@@ -224,16 +228,25 @@ router.get('/getLatest', async (req, res) => {
          res.status(200).json({message:"user verifie"})
       }
   })
-router.post('/saveUser', upload.single('photo'), async (req, res) => {
+router.post('/saveUser',  upload.fields([{ name: 'photo', maxCount: 1 }, { name: 'id_proof', maxCount: 1 }]), async (req, res) => {
     try {
      // const userId = generateUserId();
       console.log(req.body); // Generate user ID
       const { name, mobileNumber, occupation, email, state, district, username, password, role, designation, updates_required } = req.body;
-      filePath = `/uploads/${req.file.filename}`;
-      console.log('file',filePath);
+      if ( !req.files['id_proof']) {
+        throw new Error('No files uploaded');
+    }
+    const photoFilename = `${username}_photo_${photoFile.originalname}`;
+    const idProofFilename = `${username}_id_${idProofFile.originalname}`;
+
+    // Define file paths
+    filePath = `/uploads/${photoFilename}`;
+    const filePath1 = `/uploads/${idProofFilename}`;
+      console.log('file',filePath); 
+      console.log('file',filePath1);
       console.log(updates_required);
       // Create a new user instance with photo path
-      const newUser = new User({
+      const newUser = new User({ 
         name,
         mobileNumber,
         occupation,
@@ -246,6 +259,7 @@ router.post('/saveUser', upload.single('photo'), async (req, res) => {
         role,
         designation,
         updates_required:updates_required,
+        id_proof: filePath1,
       });
       console.log("asd",newUser.username)
       await newUser.save();

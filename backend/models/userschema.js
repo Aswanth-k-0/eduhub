@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
     role: String,
     designation: String,
     updates_required: String,
+    id_proof: String,
     format:[String],
   });
 

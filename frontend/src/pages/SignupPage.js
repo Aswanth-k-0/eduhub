@@ -54,6 +54,7 @@ const SignupPage = () => {
   role: '',
   designation : '',
   updates_required: '',
+  id_proof: '',
 });
 
 const [files, setFiles] = useState(null);
@@ -66,7 +67,11 @@ const handleChange = (e) => {
   if (name === 'photo') {
     setFiles(e.target.files); // Set the files state with the uploaded files
     setFormData({ ...formData, photo: e.target.files[0] }); // Set the photo in formData
-  }else {
+  }else if(name === 'id_proof'){
+    setFiles(e.target.files); // Set the files state with the uploaded files
+    setFormData({ ...formData, id_proof: e.target.files[0] }); // Set the photo in formData
+  }
+  else {
     setFormData({ ...formData, [name]: value });
   }
 };
@@ -119,9 +124,14 @@ const handleClear = () => {
     role: '',
     designation: '',
     updates_required: '',
+    id_proof: '',
   });
   const fileInput = document.getElementById('photo');
+  const fileInput1 = document.getElementById('id_proof');
   if (fileInput) {
+    fileInput.value = ''; // Clearing the file input value
+  }
+  if (fileInput1) {
     fileInput.value = ''; // Clearing the file input value
   }
 };
@@ -203,6 +213,11 @@ return (
           
         </div>
         <div className="row" style={{ marginTop: '20px', marginLeft:'40px' }}>
+        <div className="form-group col-md-4" title="Upload College ID (if you are a student or palcement officer)">
+            <label htmlFor="id_proof" className="form-label">ID</label>
+            <input className="form-control form-control-sm"  style={{height:'50px', paddingTop:'8px'}} type="file" id="id_proof" name="id_proof" onChange={handleChange} />
+          </div>
+
       <div className="form-group col-md-4" >
         <label htmlFor="updates">Choose Updates</label>
         <select className="form-control" value={inputValue} onChange={handleSelectChange} style={{ height: '50px',width:'95%' }}>

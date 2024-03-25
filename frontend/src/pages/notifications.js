@@ -4,22 +4,42 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
 import './css/header.css';
 import { Link } from 'react-router-dom';
+import {decodeToken} from 'react-jwt'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import './css/notifications.css';
-import { decodeToken } from 'react-jwt';
 
 const Notifications = () => {
+  const [expandedText, setExpandedText] = useState([]);
+
+  // Function to toggle expanded state of summarized text for a specific item
+  const toggleExpandText = (index) => {
+    const updatedExpandedText = [...expandedText];
+    updatedExpandedText[index] = !updatedExpandedText[index];
+    setExpandedText(updatedExpandedText);
+  };
+
+  // Function to render summarized text based on expanded state
+  const renderSummarizedText = (summarizedText, index) => {
+    if (expandedText[index]) {
+      return summarizedText;
+    } else {
+      // Truncate summarized text to two lines
+      const lines = summarizedText.split('\n');
+      return lines.slice(0, 2).join('\n');
+    }
+  };
+
   const [isOpen, setIsOpen] = useState(false);
     const [selectedValues, setSelectedValues] = useState(['']);
 
-    const options = ['Title', 'Date', 'Summarized Text', 'College', 'Page Link'];
+    const options = ['Title', 'Date', 'Summarized Text', 'College', 'View Document'];
     const token = localStorage.getItem('token');
-    const decodedToken = decodeToken(token);
+    const decodedToken=decodeToken(token);
     let user = decodedToken.userData;
     user.format = user.format.map(value => value.toLowerCase());
-    // Print the new array with lowercase values
-    console.log(user.format)
+ 
+    console.log(user.format);
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
     };
@@ -100,7 +120,7 @@ const handleSave = async () => {
       // Success notification
       toast.success('Format updated successfully!', {
         position: "top-center",
-        autoClose: 5000,
+        autoClose: 1000,
         hideProgressBar: true,
         closeOnClick: true,
         toastId: 'format-update-success', // Optional: unique ID for manual closing
@@ -200,31 +220,39 @@ const handleSave = async () => {
         <div className="main-body">
           <div className="row gutters-sm">
             <div className="col-md-8">
-              {(searchTerm ? filteredData : data)
-                .slice(0, notificationsPerPage)
-                .map((item) => (
-                  <div className="car" key={item._id}>
-                    <div className="car-body" style={{ height: '30px', overflowY: 'auto' }}>
-                      <h5>{item.title}</h5>
-                      <h5>College: {item.college}</h5>
-                      <p>Date: {item.date}</p>
-                      {item.summarized_text ? (
-                      <p>Summarized:{item.summarized_text}</p>
-                      ) : null}
-                      {item.document_link ? (
-                        <a href={item.document_link} target="_blank" rel="noopener noreferrer">
-                          View Document
-                        </a>
-                      ) : null}
-                      <br/>
-                      {item.page_link ? (
-                        <a href={item.page_link} target="_blank" rel="noopener noreferrer">
-                          View Page
-                        </a>
-                      ) : null}
+            {(searchTerm ? filteredData : data).slice(0, notificationsPerPage).map((item) => (
+                    <div className="car" key={item._id}>
+                        <div className="car-body" style={{ height: '30px', overflowY: 'auto' }}>
+                            {user.format && user.format.length !== 0 ? (
+                                user.format.map((i, index) => (
+                                    item[i] && (
+                                        <p key={index}>{item[i]}</p>
+                                    )
+                                ))
+                            ) : (
+                                <React.Fragment>
+                                    <h5>{item.title}</h5>
+                                    <h5>College: {item.college}</h5>
+                                    <p>Date: {item.date}</p>
+                                    {item.summarized_text && <p>Summarized: {item.summarized_text}</p>}
+                                    {item.document_link && (
+                                        <a href={item.document_link} target="_blank" rel="noopener noreferrer">
+                                            View Document
+                                        </a>
+                                    )}
+                                    <br />
+                                    {item.page_link && (
+                                        <a href={item.page_link} target="_blank" rel="noopener noreferrer">
+                                            View Page
+                                        </a>
+                                    )}
+                                </React.Fragment>
+                            )}
+                        </div>
                     </div>
-                  </div>
                 ))}
+
+
               <br />
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
