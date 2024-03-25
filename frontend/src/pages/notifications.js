@@ -77,6 +77,7 @@ const Notifications = () => {
     localStorage.removeItem('token');
   };
 
+  
 const handleSave = async () => {
   try {
     const selectedDropdownValues = selectedValues.filter(value => value.trim() !== ''); // Filter out empty values
@@ -88,10 +89,11 @@ const handleSave = async () => {
         Authorization: `${token}`,
       },
     });
+    
     if (response.status === 201) {
       // Success notification
       toast.success('Format updated successfully!', {
-        position: "top-right",
+        position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
