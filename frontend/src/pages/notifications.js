@@ -83,6 +83,7 @@ const Notifications = () => {
     localStorage.removeItem('token');
   };
 
+  
 const handleSave = async () => {
   try {
     const selectedDropdownValues = selectedValues.filter(value => value.trim() !== ''); // Filter out empty values
@@ -94,11 +95,12 @@ const handleSave = async () => {
         Authorization: `${token}`,
       },
     });
+    
     if (response.status === 201) {
       // Success notification
       toast.success('Format updated successfully!', {
-        position: "top-right",
-        autoClose: 3000,
+        position: "top-center",
+        autoClose: 5000,
         hideProgressBar: true,
         closeOnClick: true,
         toastId: 'format-update-success', // Optional: unique ID for manual closing
@@ -198,37 +200,31 @@ const handleSave = async () => {
         <div className="main-body">
           <div className="row gutters-sm">
             <div className="col-md-8">
-              {(searchTerm ? filteredData : data).slice(0, notificationsPerPage).map((item) => (
-              <div className="car" key={item._id}>
-                  <div className="car-body" style={{ height: '30px', overflowY: 'auto' }}>
-                      {user.format && user.format.length !== 0 ? (
-                          user.format.map((i, index) => (
-                              item[i] && (
-                                  <p key={index}>{item[i]}</p>
-                              )
-                          ))
-                      ) : (
-                          <React.Fragment>
-                              <h5>{item.title}</h5>
-                              <h5>College: {item.college}</h5>
-                              <p>Date: {item.date}</p>
-                              {item.summarized_text && <p>Summarized: {item.summarized_text}</p>}
-                              {item.document_link && (
-                                  <a href={item.document_link} target="_blank" rel="noopener noreferrer">
-                                      View Document
-                                  </a>
-                              )}
-                              <br />
-                              {item.page_link && (
-                                  <a href={item.page_link} target="_blank" rel="noopener noreferrer">
-                                      View Page
-                                  </a>
-                              )}
-                          </React.Fragment>
-                      )}
-              </div>
-          </div>
-      ))}
+              {(searchTerm ? filteredData : data)
+                .slice(0, notificationsPerPage)
+                .map((item) => (
+                  <div className="car" key={item._id}>
+                    <div className="car-body" style={{ height: '30px', overflowY: 'auto' }}>
+                      <h5>{item.title}</h5>
+                      <h5>College: {item.college}</h5>
+                      <p>Date: {item.date}</p>
+                      {item.summarized_text ? (
+                      <p>Summarized:{item.summarized_text}</p>
+                      ) : null}
+                      {item.document_link ? (
+                        <a href={item.document_link} target="_blank" rel="noopener noreferrer">
+                          View Document
+                        </a>
+                      ) : null}
+                      <br/>
+                      {item.page_link ? (
+                        <a href={item.page_link} target="_blank" rel="noopener noreferrer">
+                          View Page
+                        </a>
+                      ) : null}
+                    </div>
+                  </div>
+                ))}
               <br />
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
