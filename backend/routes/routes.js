@@ -6,8 +6,8 @@ import jwt from 'jsonwebtoken';
 import { SECRET_KEY } from '../config.js';
 import {verifyToken,storage} from './functions.js';
 import { userSchema } from "../models/userschema.js";
-import { retrieveData,retrievelist,retrieveLatest } from './retriveuserdata.js';
-import { all } from 'axios';
+import { retrieveData,retrievelist,retrieveLatest,retrieveScholarship } from './retriveuserdata.js';
+// import { all } from 'axios';
 
 const router = express.Router();
 const encoder =bodyParser.urlencoded({extended:true});
@@ -187,9 +187,9 @@ router.get('/notifications', async (req, res) => {
         // console.log("data=",decoded);
         let str=decoded.userData.updates_required;
         const interests = str.split(","); 
-        console.log(interests)
+        // console.log(interests)
         const allNotifications = await retrieveData(interests);
-        console.log(allNotifications);
+        // console.log(allNotifications);
         res.json(allNotifications)
       }
     } catch (error) {
@@ -219,6 +219,22 @@ router.get('/getLatest', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
       }
     });
+router.get('/getScholarship',async(req,res)=>{
+  const bearerToken = req.headers.authorization;
+  
+  if (!bearerToken) {
+    return res.status(401).json({ error: 'Unauthorized: No token provided' });
+  }
+  // Extract the token without the "Bearer " prefix
+  const token = bearerToken.split(' ')[1];
+  try{
+    const allScholarhsips= await retrieveScholarship();
+    res.json(allScholarhsips);
+  }catch(error){
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+})
   router.get('/verify',(req,res)=>{
       const token = req.headers.authorization;
     

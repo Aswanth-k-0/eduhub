@@ -60,4 +60,22 @@ async function retrieveLatest() {
         console.error("Error querying collection:", error);
     }
 }
-export {retrieveUser,retrieveData,retrievelist,retrieveLatest};
+
+async function retrieveScholarship(){
+    try {
+        const db = mongoose.connection.getClient(); // Access the MongoClient instance
+        const collectionName = 'scholarship'; // Specify the collection name
+        const collection = db.db().collection(collectionName);// Access the collection
+        const pipeline = [
+            { $sort: { dateField: -1 } }, // Sort by dateField in descending order (-1)
+            { $limit: 30 }
+        ];
+    
+        // Execute the aggregation pipeline
+        const latestValues = await collection.aggregate(pipeline).toArray();
+        return latestValues
+        } catch (error) {
+            console.error("Error querying collection:", error);
+        }
+}
+export {retrieveUser,retrieveData,retrievelist,retrieveLatest,retrieveScholarship};
