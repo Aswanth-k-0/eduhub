@@ -197,27 +197,45 @@ const handleSave = async () => {
               {(searchTerm ? filteredData : data)
                 .slice(0, notificationsPerPage)
                 .map((item) => (
-                  <div className="car" key={item._id}>
-                    <div className="car-body" style={{ height: '30px', overflowY: 'auto' }}>
-                      <h5>{item.title}</h5>
-                      <h5>College: {item.college}</h5>
-                      <p>Date: {item.date}</p>
-                      {item.summarized_text ? (
-                      <p>Summarized:{item.summarized_text}</p>
-                      ) : null}
-                      {item.document_link ? (
-                        <a href={item.document_link} target="_blank" rel="noopener noreferrer">
-                          View Document
-                        </a>
-                      ) : null}
-                      <br/>
-                      {item.page_link ? (
-                        <a href={item.page_link} target="_blank" rel="noopener noreferrer">
-                          View Page
-                        </a>
-                      ) : null}
-                    </div>
-                  </div>
+                  <div className="table-responsive">
+  <table className="table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>College</th>
+        <th>Date</th>
+        <th>Summarized</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {items.map((item) => (
+        <tr key={item._id}>
+          <td>{item.title}</td>
+          <td>{item.college}</td>
+          <td>{item.date}</td>
+          <td>{item.summarized_text}</td>
+          <td>
+            {item.document_link && (
+              <a href={item.document_link} target="_blank" rel="noopener noreferrer">
+                View Document
+              </a>
+            )}
+            {item.page_link && (
+              <>
+                {item.document_link && <br />}
+                <a href={item.page_link} target="_blank" rel="noopener noreferrer">
+                  View Page
+                </a>
+              </>
+            )}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
                 ))}
               <br />
               <button
