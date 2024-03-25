@@ -22,6 +22,10 @@ const Home = () => {
     console.log('User Name:', user.name);
     console.log('User Address:', user.address);
     console.log('User Designation:', user.designation);
+    console.log(user.format);
+    user.format = user.format.map(value => value.toLowerCase());
+    // Print the new array with lowercase values
+    console.log(user.format);
     if (decodedToken && decodedToken.userData) {
       // const { userData } = decodedToken.userData;
       console.log('Authenticated user:', user);
@@ -49,6 +53,7 @@ const Home = () => {
              });
            setNotifications(response.data);
            console.log("hiiiii"+response.data);
+           console.log("Format array:", response.data.format);
        } catch (error) {
            console.error('Error fetching data:', error);
        }
@@ -148,23 +153,26 @@ const Home = () => {
         <h3>Latest</h3>
         {notifications.slice(0, 10).map((notification, index) => (
             <div key={index} className="card" style={{
-              marginLeft: '40px' , maxHeight:'100px', marginRight: '20px',marginBottom:'20px', borderColor:'black',borderWidth:'1px'
-            }} >
+                marginLeft: '40px', maxHeight: '100px', marginRight: '20px', marginBottom: '20px', borderColor: 'black', borderWidth: '1px'
+            }}>
                 <div className="card-body">
                     <p>
-                        {notification.title} - {notification.college} 
-                        {/* Check if document_link is available */}
-                        {notification.document_link ? (
-                            // If document_link is available, render the anchor tag with the link
-                            <span>&nbsp; &nbsp; &nbsp;<a className="happ3 btn btn-info end-0" href={notification.document_link}>View</a></span>
-                        ) : (
-                            // If document_link is not available, render the default link (notification.page_link)
-                            <span>&nbsp; &nbsp; &nbsp;<a className="happ3 btn btn-info end-0" href={notification.page_link}>View</a></span>
-                        )}
+                            <p>
+                                {notification.title} - {notification.college}
+                                {/* Check if document_link is available */}
+                                {notification.document_link ? (
+                                    // If document_link is available, render the anchor tag with the link
+                                    <span>&nbsp; &nbsp; &nbsp;<a className="happ3 btn btn-info end-0" href={notification.document_link}>View</a></span>
+                                ) : (
+                                    // If document_link is not available, render the default link (notification.page_link)
+                                    <span>&nbsp; &nbsp; &nbsp;<a className="happ3 btn btn-info end-0" href={notification.page_link}>View</a></span>
+                                )}
+                            </p>
                     </p>
                 </div>
             </div>
         ))}
+
     </div>
 </div>
               <div className="card mb-3">
