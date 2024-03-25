@@ -9,6 +9,26 @@ import 'font-awesome/css/font-awesome.min.css';
 import './css/notifications.css';
 
 const Notifications = () => {
+  const [expandedText, setExpandedText] = useState([]);
+
+  // Function to toggle expanded state of summarized text for a specific item
+  const toggleExpandText = (index) => {
+    const updatedExpandedText = [...expandedText];
+    updatedExpandedText[index] = !updatedExpandedText[index];
+    setExpandedText(updatedExpandedText);
+  };
+
+  // Function to render summarized text based on expanded state
+  const renderSummarizedText = (summarizedText, index) => {
+    if (expandedText[index]) {
+      return summarizedText;
+    } else {
+      // Truncate summarized text to two lines
+      const lines = summarizedText.split('\n');
+      return lines.slice(0, 2).join('\n');
+    }
+  };
+
   const [isOpen, setIsOpen] = useState(false);
     const [selectedValues, setSelectedValues] = useState(['']);
 
@@ -196,15 +216,25 @@ const handleSave = async () => {
             <div className="col-md-8">
               {(searchTerm ? filteredData : data)
                 .slice(0, notificationsPerPage)
-                .map((item) => (
+                .map((item, index) => (
                   <div className="car" key={item._id}>
                     <div className="car-body" style={{ height: '30px', overflowY: 'auto' }}>
                       <h5>{item.title}</h5>
                       <h5>College: {item.college}</h5>
                       <p>Date: {item.date}</p>
-                      {item.summarized_text ? (
-                      <p>Summarized:{item.summarized_text}</p>
-                      ) : null}
+                      {item.summarized_text && (
+          <div>
+            <p>
+              Summarized: {renderSummarizedText(item.summarized_text, index)}
+              {/* Render "Show more" link if text is truncated */}
+              {item.summarized_text.split('\n').length > 2 && (
+                <span style={{ color: 'blue', cursor: 'pointer' }} onClick={() => toggleExpandText(index)}>
+                  {expandedText[index] ? ' <<show less' : ' show more>>'}
+                </span>
+              )}
+            </p>
+          </div>
+        )}
                       {item.document_link ? (
                         <a href={item.document_link} target="_blank" rel="noopener noreferrer">
                           View Document
